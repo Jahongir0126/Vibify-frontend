@@ -1,0 +1,79 @@
+my-app/
+├── public/
+│   ├── index.html
+│   ├── favicon.ico
+├── src/
+│   ├── assets/
+│   │   ├── images/
+│   │   │   ├── logo.png
+│   │   │   ├── default-avatar.png
+│   │   ├── icons/
+│   │   │   ├── chat.svg
+│   │   │   ├── heart.svg
+│   │   ├── styles/
+│   │       ├── variables.css
+│   │       ├── global.css
+│   │       ├── themes.css
+│   ├── components/
+│   │   ├── UI/                     # Общие переиспользуемые UI-компоненты
+│   │   │   ├── Button.jsx
+│   │   │   ├── Input.jsx
+│   │   │   ├── Avatar.jsx
+│   │   │   ├── Loader.jsx
+│   │   ├── Auth/
+│   │   │   ├── LoginForm.jsx
+│   │   │   ├── RegisterForm.jsx
+│   │   ├── Profile/
+│   │   │   ├── ProfileCard.jsx
+│   │   │   ├── EditProfile.jsx
+│   │   ├── Match/
+│   │   │   ├── MatchCard.jsx
+│   │   ├── Chat/
+│   │   │   ├── ChatWindow.jsx
+│   │   │   ├── Message.jsx
+│   │   │   ├── ChatList.jsx
+│   ├── contexts/                   # Контексты для управления глобальным состоянием
+│   │   ├── AuthContext.jsx
+│   │   ├── ChatContext.jsx
+│   │   ├── ProfileContext.jsx
+│   ├── hooks/                       # Кастомные хуки
+│   │   ├── auth/
+│   │   │   ├── useAuth.js
+│   │   ├── matches/
+│   │   │   ├── useMatches.js
+│   │   ├── chat/
+│   │   │   ├── useChat.js
+│   │   ├── profile/
+│   │       ├── useProfile.js
+│   ├── pages/                       # Страницы приложения
+│   │   ├── Auth/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   ├── Profile/
+│   │   │   ├── Profile.jsx
+│   │   │   ├── EditProfile.jsx
+│   │   ├── Matches/
+│   │   │   ├── Matches.jsx
+│   │   ├── Messages/
+│   │   │   ├── Messages.jsx
+│   │   ├── NotFound.jsx
+│   ├── services/                    # API-сервисы для работы с сервером
+│   │   ├── api/
+│   │   │   ├── api.js
+│   │   │   ├── httpClient.js         # Глобальная настройка Axios
+│   │   ├── auth/
+│   │   │   ├── authService.js
+│   │   ├── user/
+│   │   │   ├── userService.js
+│   │   ├── chat/
+│   │       ├── chatService.js
+│   ├── routes/
+│   │   ├── ProtectedRoute.jsx        # Приватные маршруты
+│   │   ├── Routes.jsx
+│   ├── App.jsx
+│   ├── index.jsx
+│   ├── index.css
+├── .env
+├── package.json
+├── README.md
+└── .gitignore
