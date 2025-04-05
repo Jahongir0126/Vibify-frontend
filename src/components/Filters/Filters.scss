@@ -1,0 +1,92 @@
+@import '../../styles/variables.scss';
+
+.filters {
+  background: var(--card-background);
+  backdrop-filter: var(--backdrop-blur);
+  padding: $spacing-lg;
+  border-radius: 15px;
+  margin-bottom: $spacing-xl;
+  border: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-md;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  select, input {
+    background: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: $spacing-sm;
+    color: var(--text-primary);
+    transition: $transition-default;
+    outline: none;
+
+    &:focus {
+      border-color: var(--accent-primary);
+      box-shadow: var(--neon-glow);
+    }
+
+    &::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.5;
+    }
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--accent-primary) 50%),
+                     linear-gradient(135deg, var(--accent-primary) 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+                        calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px,
+                    5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+
+    &[multiple] {
+      height: 120px;
+      background-image: none;
+    }
+  }
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+
+  input {
+    width: 70px;
+    text-align: center;
+  }
+
+  span {
+    color: var(--text-secondary);
+  }
+}
+
+@media (max-width: $tablet) {
+  .filters {
+    grid-template-columns: 1fr;
+    padding: $spacing-md;
+  }
+
+  .filter-group {
+    select[multiple] {
+      height: 100px;
+    }
+  }
+} 

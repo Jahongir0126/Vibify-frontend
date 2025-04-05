@@ -1,0 +1,120 @@
+@import '../../styles/variables.scss';
+
+.user-card {
+  background: var(--card-background);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: $transition-default;
+  position: relative;
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--neon-glow);
+    border-color: var(--accent-primary);
+  }
+}
+
+.user-card-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: $transition-default;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.user-card-content {
+  padding: $spacing-md;
+}
+
+.user-card-name {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-bottom: $spacing-sm;
+}
+
+.user-card-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+}
+
+.interest-tag {
+  background: var(--hover-background);
+  color: var(--text-secondary);
+  padding: $spacing-xs $spacing-sm;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  transition: $transition-default;
+
+  &:hover {
+    background: var(--active-background);
+    color: var(--text-primary);
+  }
+}
+
+.user-card-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: $spacing-md;
+  border-top: 1px solid var(--border-color);
+}
+
+.action-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: $transition-default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+
+  &.like {
+    background: var(--accent-gradient);
+    color: var(--text-primary);
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: var(--neon-glow);
+    }
+  }
+
+  &.skip {
+    background: var(--hover-background);
+    color: var(--text-secondary);
+
+    &:hover {
+      background: var(--active-background);
+      color: var(--text-primary);
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .user-card-image {
+    height: 250px;
+  }
+
+  .user-card-name {
+    font-size: 1.2rem;
+  }
+
+  .action-button {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+} 

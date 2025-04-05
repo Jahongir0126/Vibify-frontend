@@ -1,10 +1,10 @@
-import React from "react"
-import Sidebar from "../../components/Sidebar/Sidebar"
-import Hero from "../../components/Hero/Hero"
-import Filters from "../../components/Filters/Filters"
-import UserCard from "../../components/UserCard/UserCard"
-import Footer from "../../components/Footer/Footer"
-import "./Home.scss"
+import React, { useState } from 'react';
+import Sidebar from '../../components/Sidebar/Sidebar';
+import Hero from '../../components/Hero/Hero';
+import Filters from '../../components/Filters/Filters';
+import UserCard from '../../components/UserCard/UserCard';
+import Footer from '../../components/Footer/Footer';
+import './HomePage.scss';
 
 // Временные данные для демонстрации
 const mockUsers = [
@@ -28,18 +28,20 @@ const mockUsers = [
   },
 ];
 
-export default function Home({ isDarkMode, setIsDarkMode }) {
-  const handleFilterChange = (filters) => {
+const HomePage: React.FC = () => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const handleFilterChange = (filters: any) => {
     console.log('Filters changed:', filters);
     // Здесь будет логика фильтрации пользователей
   };
 
-  const handleLike = (userId) => {
+  const handleLike = (userId: string) => {
     console.log('Liked user:', userId);
     // Здесь будет логика обработки лайка
   };
 
-  const handleSkip = (userId) => {
+  const handleSkip = (userId: string) => {
     console.log('Skipped user:', userId);
     // Здесь будет логика обработки пропуска
   };
@@ -68,7 +70,7 @@ export default function Home({ isDarkMode, setIsDarkMode }) {
         onThemeToggle={() => setIsDarkMode(!isDarkMode)}
       />
     </div>
-  )
-}
+  );
+};
 
-
+export default HomePage; 

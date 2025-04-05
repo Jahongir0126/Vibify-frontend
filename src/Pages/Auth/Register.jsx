@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
+import Header from '../../Components/Header/Header'
+import "./Auth.scss"
 import api from '../../Api'
 
 export default function Register() {
@@ -74,7 +76,6 @@ export default function Register() {
         })
         setUsername("")
         setPassword("")
-        setCheckPassword("")
         setTimeout(()=>{        
           Navigate("/")
         },1400)
@@ -88,6 +89,8 @@ export default function Register() {
 
   return (
     <>
+    <ToastContainer/>
+      <Header />
       <div className="d-flex justify-content-center align-items-center login">
         <form className='w-25' onSubmit={handleForm}>
           <h3 className='text-center mb-4'>Регистрация</h3>
