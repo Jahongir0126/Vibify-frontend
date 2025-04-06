@@ -1,0 +1,37 @@
+@use '../../styles/variables' as *;
+
+.app-layout {
+  min-height: 100vh;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &.dark {
+    --background-primary: var(--dark-bg);
+    --background-secondary: var(--darker-bg);
+    --text-primary: var(--text-light);
+    --text-secondary: var(--text-light-secondary);
+  }
+
+  &.light {
+    --background-primary: var(--light-bg);
+    --background-secondary: var(--lighter-bg);
+    --text-primary: var(--text-dark);
+    --text-secondary: var(--text-dark-secondary);
+  }
+}
+
+.main-content {
+  padding-left: 60px; // Account for sidebar width
+  padding-top: 60px; // Account for navbar height
+  min-height: 100vh;
+  transition: padding-left 0.3s ease;
+}
+
+// Responsive styles
+@media (max-width: $tablet) {
+  .main-content {
+    padding-left: 0;
+    padding-bottom: 120px; // Account for bottom navigation and navbar
+  }
+} 

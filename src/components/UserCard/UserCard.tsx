@@ -18,7 +18,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onLike, onSkip }) => {
   return (
     <div className="user-card">
       <div className="user-card-image">
-        <img src={user.photo} alt={user.name} />
+        <img src={user.photo ? user.photo : 'https://picsum.photos/200/300'} alt="user_image" />
       </div>
       <div className="user-card-content">
         <h3 className="user-card-name">{user.name}</h3>

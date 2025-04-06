@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables' as *;
 
 .sidebar {
   position: fixed;
@@ -11,9 +11,54 @@
   z-index: $z-index-sidebar;
   box-shadow: var(--neon-glow);
   border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+
+  &:not(.pinned):hover {
+    width: 200px;
+  }
+
+  &.pinned {
+    width: 200px;
+  }
+}
+
+.pin-button {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: $transition-default;
+  width: 100%;
+  justify-content: flex-start;
 
   &:hover {
-    width: 200px;
+    color: var(--text-primary);
+    background: var(--hover-background);
+  }
+
+  .pin-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: $spacing-md;
+    transition: transform 0.3s ease;
+
+    &.pinned {
+      transform: rotate(45deg);
+      color: var(--accent-primary);
+    }
+  }
+
+
+
+  &:hover .pin-label,
+  .sidebar.pinned & {
+    .pin-label {
+      opacity: 1;
+    }
   }
 }
 
@@ -21,6 +66,7 @@
   display: flex;
   flex-direction: column;
   padding: $spacing-md 0;
+  flex: 1;
 }
 
 .sidebar-item {
@@ -51,7 +97,8 @@
   transition: $transition-default;
 }
 
-.sidebar:hover .sidebar-label {
+.sidebar:not(.pinned):hover .sidebar-label,
+.sidebar.pinned .sidebar-label {
   opacity: 1;
 }
 
@@ -61,16 +108,30 @@
     height: 60px;
     bottom: 0;
     top: auto;
+    flex-direction: row;
+  }
+
+  .pin-button {
+    display: none;
   }
 
   .sidebar-nav {
     flex-direction: row;
     justify-content: space-around;
     padding: 0;
+    width: 100%;
   }
 
   .sidebar-item {
     padding: $spacing-sm;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-icon {
+    margin-right: 0;
+    margin-bottom: $spacing-xs;
   }
 
   .sidebar-label {

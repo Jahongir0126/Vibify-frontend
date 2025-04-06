@@ -1,0 +1,126 @@
+@use '../../styles/variables' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 60px; // Account for sidebar width
+  height: 60px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: var(--backdrop-blur);
+  z-index: $z-index-navbar;
+  transition: all 0.3s ease;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-lg;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--accent-primary);
+  }
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--hover-background);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: $spacing-sm;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: var(--hover-background);
+    transform: rotate(15deg);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.register-button {
+  background: var(--accent-gradient);
+  color: var(--text-primary);
+  border: none;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--neon-glow);
+  }
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+
+  &:hover {
+    color: var(--error-color);
+  }
+}
+
+@media (max-width: $tablet) {
+  .navbar {
+    left: 0;
+    bottom: 60px; // Account for mobile sidebar
+  }
+
+  .navbar-content {
+    padding: 0 $spacing-md;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+
+  .nav-link {
+    padding: $spacing-sm;
+  }
+} 

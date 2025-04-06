@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../Api";
-import Header from "../../Components/Header/Header";
 import "./Auth.scss"
 
 export default function Login() {
@@ -71,7 +70,6 @@ export default function Login() {
 
   return (
     <>
-      <Header />
       <div className="d-flex justify-content-center align-items-center login">
         <form className='w-25' onSubmit={handleForm}>
           <h3 className='text-center mb-4'>Вход</h3>

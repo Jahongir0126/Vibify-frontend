@@ -1,4 +1,4 @@
-@import '../../styles/variables.scss';
+@use '../../styles/variables' as *;
 
 .user-card {
   background: var(--card-background);
@@ -12,20 +12,20 @@
   &:hover {
     transform: translateY(-5px);
     box-shadow: var(--neon-glow);
-    border-color: var(--accent-primary);
   }
 }
 
 .user-card-image {
   width: 100%;
   height: 300px;
+  position: relative;
   overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: $transition-default;
+    transition: transform 0.3s ease;
   }
 
   &:hover img {
@@ -37,84 +37,102 @@
   padding: $spacing-md;
 }
 
-.user-card-name {
-  color: var(--text-primary);
-  font-size: 1.5rem;
+.user-card-header {
   margin-bottom: $spacing-sm;
+}
+
+.user-card-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.user-card-location {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: $spacing-xs;
+
+  svg {
+    color: var(--accent-primary);
+  }
 }
 
 .user-card-interests {
   display: flex;
   flex-wrap: wrap;
   gap: $spacing-xs;
+  margin-top: $spacing-sm;
 }
 
 .interest-tag {
-  background: var(--hover-background);
+  background: var(--background-elevated);
   color: var(--text-secondary);
   padding: $spacing-xs $spacing-sm;
-  border-radius: 15px;
+  border-radius: 20px;
   font-size: 0.9rem;
   transition: $transition-default;
 
   &:hover {
-    background: var(--active-background);
+    background: var(--accent-primary-alpha);
     color: var(--text-primary);
   }
 }
 
 .user-card-actions {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: $spacing-md;
   border-top: 1px solid var(--border-color);
+  background: var(--background-elevated);
 }
 
 .action-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 48%;
+  padding: $spacing-sm;
   border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: $transition-default;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+
+  &.skip {
+    background: var(--background-secondary);
+    color: var(--text-secondary);
+
+    &:hover {
+      background: var(--hover-background);
+      color: var(--text-primary);
+    }
+  }
 
   &.like {
     background: var(--accent-gradient);
     color: var(--text-primary);
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: var(--neon-glow);
-    }
-  }
-
-  &.skip {
-    background: var(--hover-background);
-    color: var(--text-secondary);
-
-    &:hover {
-      background: var(--active-background);
-      color: var(--text-primary);
     }
   }
 }
 
-@media (max-width: $tablet) {
+@media (max-width: $mobile) {
   .user-card-image {
     height: 250px;
   }
 
-  .user-card-name {
-    font-size: 1.2rem;
+  .user-card-content {
+    padding: $spacing-sm;
   }
 
-  .action-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+  .user-card-actions {
+    padding: $spacing-sm;
   }
 } 

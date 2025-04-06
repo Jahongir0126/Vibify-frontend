@@ -64,6 +64,8 @@ $desktop: 1024px;
 $transition-default: all 0.3s ease;
 
 // Z-indexes
-$z-index-sidebar: 1000;
+$z-index-sidebar: 1100;
+$z-index-navbar: 1000;
 $z-index-modal: 2000;
-$z-index-tooltip: 3000; 
+$z-index-dropdown: 1200;
+$z-index-tooltip: 1300; 
