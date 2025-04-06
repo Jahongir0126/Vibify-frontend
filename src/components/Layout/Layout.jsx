@@ -6,13 +6,13 @@ import './Layout.scss';
 const Layout = ({ children, isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
   return (
     <div className={`app-layout ${isDarkMode ? 'dark' : 'light'}`}>
-      <Sidebar />
       <Navbar 
         isLoggedIn={isLoggedIn}
         isDarkMode={isDarkMode}
         onThemeToggle={onThemeToggle}
         onLogout={onLogout}
       />
+      <Sidebar isLoggedIn={isLoggedIn} />
       <main className="main-content">
         {children}
       </main>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Profile from '../../components/Profile/Profile';
 import './Profile.scss';
 
 const ProfilePage = () => {

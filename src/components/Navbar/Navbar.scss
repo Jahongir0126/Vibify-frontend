@@ -3,124 +3,145 @@
 .navbar {
   position: fixed;
   top: 0;
+  left: 60px;
   right: 0;
-  left: 60px; // Account for sidebar width
   height: 60px;
-  background: var(--background-secondary);
+  background: var(--card-background);
+  backdrop-filter: var(--navbar-blur);
+  -webkit-backdrop-filter: var(--navbar-blur);
   border-bottom: 1px solid var(--border-color);
-  backdrop-filter: var(--backdrop-blur);
-  z-index: $z-index-navbar;
-  transition: all 0.3s ease;
-}
-
-.navbar-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 $spacing-lg;
-}
+  z-index: $z-index-navbar;
+  transition: $transition-base;
+  box-shadow: 0 1px 0 0 var(--border-color);
 
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-
-  &:hover {
-    color: var(--accent-primary);
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+    gap: $spacing-md;
   }
-}
 
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: $spacing-md;
-}
+  &-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
 
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-  padding: $spacing-sm $spacing-md;
-  color: var(--text-secondary);
-  text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  font-weight: 500;
+  &-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
 
-  &:hover {
+  &-logo {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
     color: var(--text-primary);
-    background: var(--hover-background);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    transition: $transition-fast;
+
+    &:hover {
+      color: var(--accent-primary);
+    }
+
+    img {
+      height: 32px;
+      width: auto;
+    }
   }
 
-  svg {
-    width: 16px;
-    height: 16px;
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
   }
-}
 
-.theme-toggle {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: $spacing-sm;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-
-  &:hover {
+  .theme-toggle {
+    padding: $spacing-sm;
+    border-radius: $border-radius-full;
     color: var(--text-primary);
+    transition: $transition-fast;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+
+    &:hover {
+      background: var(--hover-background);
+      transform: rotate(15deg);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .profile-button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-full;
     background: var(--hover-background);
-    transform: rotate(15deg);
-  }
+    transition: $transition-fast;
+    font-weight: $font-weight-medium;
 
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-}
+    &:hover {
+      background: var(--active-background);
+      transform: translateY(-1px);
+    }
 
-.register-button {
-  background: var(--accent-gradient);
-  color: var(--text-primary);
-  border: none;
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: $border-radius-full;
+      object-fit: cover;
+    }
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--neon-glow);
-  }
-}
-
-.logout-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-
-  &:hover {
-    color: var(--error-color);
+    span {
+      color: var(--text-primary);
+    }
   }
 }
 
+// Responsive styles
 @media (max-width: $tablet) {
   .navbar {
     left: 0;
-    bottom: 60px; // Account for mobile sidebar
-  }
-
-  .navbar-content {
     padding: 0 $spacing-md;
-  }
 
-  .nav-link span {
-    display: none;
-  }
+    &-logo {
+      font-size: $font-size-lg;
 
-  .nav-link {
-    padding: $spacing-sm;
+      img {
+        height: 28px;
+      }
+    }
+
+    .profile-button {
+      padding: $spacing-xs;
+      
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .navbar {
+    padding: 0 $spacing-sm;
   }
 } 

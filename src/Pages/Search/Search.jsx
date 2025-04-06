@@ -82,9 +82,8 @@ const Search = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
       isDarkMode={isDarkMode}
       onThemeToggle={onThemeToggle}
       onLogout={onLogout}
-    >
-      <div className="search-content">
-        <Filters 
+    ><div className="search-content">
+        <Filters
           filters={filters}
           onChange={handleFilterChange}
         />

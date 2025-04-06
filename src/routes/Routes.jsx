@@ -13,7 +13,7 @@ import Search from "../Pages/Search/Search"
 import Settings from "../Pages/Settings/Settings"
 
 export default function RoutesWrapper({ isDarkMode, setIsDarkMode }) {
-  return ( 
+  return (
     <Routes>
       <Route path="/" element={<Private isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />}>
         <Route index element={<Home isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />

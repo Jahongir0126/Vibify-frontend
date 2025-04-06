@@ -4,34 +4,75 @@
   min-height: 100vh;
   background-color: var(--background-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: $transition-base;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
+  // Theme variables
   &.dark {
-    --background-primary: var(--dark-bg);
-    --background-secondary: var(--darker-bg);
-    --text-primary: var(--text-light);
-    --text-secondary: var(--text-light-secondary);
+    --background-primary: #{$dark-bg};
+    --background-secondary: #{$darker-bg};
+    --text-primary: #{$text-light};
+    --text-secondary: #{$text-light-secondary};
+    --border-color: #{$border-dark};
+    --card-background: rgba(18, 18, 18, 0.8);
+    --hover-background: rgba(255, 255, 255, 0.05);
+    --active-background: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --navbar-blur: blur(10px);
+    --card-blur: blur(8px);
   }
 
   &.light {
-    --background-primary: var(--light-bg);
-    --background-secondary: var(--lighter-bg);
-    --text-primary: var(--text-dark);
-    --text-secondary: var(--text-dark-secondary);
+    --background-primary: #{$light-bg};
+    --background-secondary: #{$lighter-bg};
+    --text-primary: #{$text-dark};
+    --text-secondary: #{$text-dark-secondary};
+    --border-color: #{$border-light};
+    --card-background: rgba(255, 255, 255, 0.8);
+    --hover-background: rgba(0, 0, 0, 0.05);
+    --active-background: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --navbar-blur: blur(8px);
+    --card-blur: blur(6px);
   }
 }
 
 .main-content {
-  padding-left: 60px; // Account for sidebar width
-  padding-top: 60px; // Account for navbar height
-  min-height: 100vh;
-  transition: padding-left 0.3s ease;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl calc(#{$spacing-lg} + 60px);
+  position: relative;
+  z-index: 1;
+
+  @supports (backdrop-filter: blur(10px)) {
+    background: transparent;
+  }
 }
 
 // Responsive styles
-@media (max-width: $tablet) {
+@media (max-width: $desktop) {
   .main-content {
-    padding-left: 0;
-    padding-bottom: 120px; // Account for bottom navigation and navbar
+    max-width: 100%;
+    padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl $spacing-lg;
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-layout {
+    padding-bottom: 60px; // Space for mobile navigation
+  }
+
+  .main-content {
+    padding: calc(#{$spacing-lg} + 60px) $spacing-md $spacing-lg $spacing-md;
+  }
+}
+
+@media (max-width: $mobile) {
+  .main-content {
+    padding: calc(#{$spacing-md} + 60px) $spacing-sm $spacing-md $spacing-sm;
   }
 } 

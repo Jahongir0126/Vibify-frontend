@@ -1,9 +1,7 @@
 @use '../../styles/variables' as *;
 
 .search-page {
-  min-height: 100vh;
-  padding-top: 80px; // Увеличиваем отступ сверху для навбара
-  padding-bottom: $spacing-xl;
+  min-height: 100%;
   background-color: var(--background-primary);
   color: var(--text-primary);
   transition: all 0.3s ease;
@@ -13,8 +11,6 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: $spacing-lg;
-  position: relative;
-  z-index: 1; // Устанавливаем z-index ниже, чем у навбара
 }
 
 .users-grid {
@@ -45,7 +41,7 @@
   border-radius: 12px;
   backdrop-filter: var(--backdrop-blur);
   position: relative;
-  z-index: 2; // Фильтры должны быть над контентом, но под навбаром
+  z-index: 2;
   
   .filters-container {
     display: flex;
@@ -108,10 +104,6 @@
 
 // Responsive styles
 @media (max-width: $tablet) {
-  .search-page {
-    padding-top: 60px; // Уменьшаем отступ на мобильных
-  }
-
   .search-content {
     padding: $spacing-md;
   }
