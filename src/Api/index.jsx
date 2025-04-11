@@ -1,4 +1,5 @@
 import axios from "axios";
+import { data } from "react-router-dom";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -94,6 +95,7 @@ const api = {
     try {
       const response = await apiClient.get('/user-service/users');
       return response.data;
+      
     } catch (error) {
       console.error('API get users error:', error.response?.data);
       return error.response?.data || { message: 'Ошибка получения пользователей' };

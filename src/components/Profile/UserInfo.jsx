@@ -11,7 +11,8 @@ const UserInfo = ({ userId, currentUserId }) => {
     gender: '',
     location: '',
     birthdate: '',
-    avatarUrl: ''
+    avatarUrl: '',
+    photoUrl:''
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,14 +28,15 @@ const UserInfo = ({ userId, currentUserId }) => {
           setUserData({
             username: 'Пользователь', // API не возвращает имя пользователя
             avatar: profileData.avatarUrl || 'https://via.placeholder.com/150',
+            photoUrl:profileData.photoUrl,
             bio: profileData.bio || 'Информация отсутствует',
             location: profileData.location || 'Не указано',
             joinDate: new Date().toISOString(),
             gender: profileData.gender || 'Не указано',
             birthdate: profileData.birthdate ? new Date(profileData.birthdate).toLocaleDateString() : 'Не указано',
             userId: profileData.userId,
-            followersCount: 0,
-            followingCount: 0,
+            followersCount: 1,
+            followingCount: 4,
             isFollowing: false
           });
           
@@ -43,6 +45,7 @@ const UserInfo = ({ userId, currentUserId }) => {
             gender: profileData.gender || '',
             location: profileData.location || '',
             birthdate: profileData.birthdate || '',
+            photoUrl:profileData.photoUrl ||'',
             avatarUrl: profileData.avatarUrl || ''
           });
         } else {
@@ -88,7 +91,8 @@ const UserInfo = ({ userId, currentUserId }) => {
         gender: formData.gender || '',
         location: formData.location || '',
         birthdate: formattedBirthdate,
-        photoUrl: formData.avatarUrl || userData.avatar // Используем текущий аватар как значение по умолчанию
+        avatarUrl:formData.avatarUrl,
+        photoUrl: formData.photoUrl  // Используем текущий аватар как значение по умолчанию
       });
       
       // Обновляем данные пользователя независимо от результата,
@@ -99,6 +103,7 @@ const UserInfo = ({ userId, currentUserId }) => {
         location: formData.location || prev.location,
         gender: formData.gender || prev.gender,
         birthdate: formData.birthdate ? new Date(formData.birthdate).toLocaleDateString() : prev.birthdate,
+        photoUrl:formData.photoUrl || prev.photoUrl,
         avatar: formData.avatarUrl || prev.avatar
       }));
       setIsEditing(false);
@@ -194,7 +199,6 @@ const UserInfo = ({ userId, currentUserId }) => {
                 <option value="">Не указано</option>
                 <option value="male">Мужской</option>
                 <option value="female">Женский</option>
-                <option value="other">Другой</option>
               </select>
             </div>
             <div className="form-group">
@@ -212,6 +216,16 @@ const UserInfo = ({ userId, currentUserId }) => {
                 type="text"
                 name="avatarUrl"
                 value={formData.avatarUrl}
+                onChange={handleInputChange}
+                placeholder="URL аватара"
+              />
+            </div>
+            <div className="form-group">
+              <label>URL фото:</label>
+              <input 
+                type="text"
+                name="photoUrl"
+                value={formData.photoUrl}
                 onChange={handleInputChange}
                 placeholder="URL изображения"
               />

@@ -113,6 +113,20 @@
       }
     }
   }
+
+  &-details {
+    margin-top: $spacing-sm;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    
+    p {
+      margin-bottom: $spacing-xs;
+    }
+    
+    strong {
+      color: var(--text-primary);
+    }
+  }
 }
 
 // Responsive styles
