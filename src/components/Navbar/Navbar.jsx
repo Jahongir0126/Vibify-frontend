@@ -55,13 +55,11 @@ const Navbar = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
 
           {isLoggedIn ? (
             <>
-              <Link to="/profile" className="nav-link">
+              <Link to="/profile" className="nav-link ms-3" title='Профиль'>
                 <FontAwesomeIcon icon={faUser} />
-                <span>Профиль</span>
               </Link>
-              <button className="nav-link logout-button" onClick={handleLogout}>
+              <button className="nav-link logout-button ms-3" title='Выйти' onClick={handleLogout}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
-                <span>Выйти</span>
               </button>
             </>
           ) : (

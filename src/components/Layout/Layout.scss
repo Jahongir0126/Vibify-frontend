@@ -47,6 +47,12 @@
   padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl calc(#{$spacing-lg} + 60px);
   position: relative;
   z-index: 1;
+  transition: padding-left 0.3s ease;
+
+  // Adjust padding when sidebar is pinned
+  &.sidebar-pinned {
+    padding-left: calc(#{$spacing-lg} + 200px);
+  }
 
   @supports (backdrop-filter: blur(10px)) {
     background: transparent;
@@ -58,6 +64,11 @@
   .main-content {
     max-width: 100%;
     padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl $spacing-lg;
+    
+    // Adjust padding when sidebar is pinned
+    &.sidebar-pinned {
+      padding-left: calc(#{$spacing-lg} + 200px);
+    }
   }
 }
 
@@ -68,11 +79,21 @@
 
   .main-content {
     padding: calc(#{$spacing-lg} + 60px) $spacing-md $spacing-lg $spacing-md;
+    
+    // Reset padding for mobile
+    &.sidebar-pinned {
+      padding-left: $spacing-md;
+    }
   }
 }
 
 @media (max-width: $mobile) {
   .main-content {
     padding: calc(#{$spacing-md} + 60px) $spacing-sm $spacing-md $spacing-sm;
+    
+    // Reset padding for mobile
+    &.sidebar-pinned {
+      padding-left: $spacing-sm;
+    }
   }
-} 
+}

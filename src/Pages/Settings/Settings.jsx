@@ -1,14 +1,18 @@
 import React from 'react';
-import Settings from '../../components/Settings/Settings';
-import './Settings.scss';
+import Preferences from '../../components/Preferences/Preferences';
+import './Settings.css';
 
-const SettingsPage = () => {
+const Settings = () => {
+  const userId = localStorage.getItem('userId');
+
   return (
-    <div className="settings-page">
-      <h1>Settings Page</h1>
-      <Settings />
+    <div className="settings-container">
+      <h1>Настройки</h1>
+      <div className="settings-content">
+        <Preferences userId={userId} />
+      </div>
     </div>
   );
 };
 
-export default SettingsPage;
+export default Settings;

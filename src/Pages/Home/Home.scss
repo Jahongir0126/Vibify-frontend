@@ -1,7 +1,7 @@
 @use '../../styles/variables' as *;
 
 .home-page {
-  min-height: 100vh;
+  // min-height: 100vh;
   background-color: var(--background-primary);
   color: var(--text-primary);
   padding-left: 60px; // Account for sidebar width

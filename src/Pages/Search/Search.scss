@@ -1,12 +1,5 @@
 @use '../../styles/variables' as *;
 
-.search-page {
-  min-height: 100%;
-  background-color: var(--background-primary);
-  color: var(--text-primary);
-  transition: all 0.3s ease;
-}
-
 .search-content {
   max-width: 1400px;
   margin: 0 auto;

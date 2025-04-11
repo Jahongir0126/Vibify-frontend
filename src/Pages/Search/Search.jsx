@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Layout from '../../components/Layout/Layout';
 import Filters from '../../components/Filters/Filters';
 import UserCard from '../../components/UserCard/UserCard';
 import './Search.scss';
@@ -37,7 +36,7 @@ const mockUsers = [
   }
 ];
 
-const Search = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
+const Search = () => {
   const [filters, setFilters] = useState({
     preferred_gender: '',
     age_min: '',
@@ -77,28 +76,22 @@ const Search = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
   });
 
   return (
-    <Layout
-      isLoggedIn={isLoggedIn}
-      isDarkMode={isDarkMode}
-      onThemeToggle={onThemeToggle}
-      onLogout={onLogout}
-    ><div className="search-content">
-        <Filters
-          filters={filters}
-          onChange={handleFilterChange}
-        />
-        <div className="users-grid">
-          {filteredUsers.map(user => (
-            <UserCard
-              key={user.id}
-              user={user}
-              onLike={handleLike}
-              onSkip={handleSkip}
-            />
-          ))}
-        </div>
+    <div className="search-content">
+      <Filters 
+        filters={filters}
+        onChange={handleFilterChange}
+      />
+      <div className="users-grid">
+        {filteredUsers.map(user => (
+          <UserCard
+            key={user.id}
+            user={user}
+            onLike={handleLike}
+            onSkip={handleSkip}
+          />
+        ))}
       </div>
-    </Layout>
+    </div>
   );
 };
 

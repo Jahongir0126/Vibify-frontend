@@ -3,18 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './UserCard.scss';
 
-interface UserCardProps {
-  user: {
-    id: string;
-    name: string;
-    photo: string;
-    interests: string[];
-  };
-  onLike: (id: string) => void;
-  onSkip: (id: string) => void;
-}
 
-const UserCard: React.FC<UserCardProps> = ({ user, onLike, onSkip }) => {
+
+const UserCard = ({ user, onLike, onSkip }) => {
   return (
     <div className="user-card">
       <div className="user-card-image">

@@ -4,9 +4,11 @@ import RoutesWrapper from "./routes/Routes"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles/global.scss';
+import Layout from './components/Layout/Layout';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Загрузка темы из localStorage при запуске
   useEffect(() => {
@@ -18,6 +20,11 @@ function App() {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     }
+    
+    // Check if user is logged in
+    const token = localStorage.getItem("accessToken");
+    
+    setIsLoggedIn(!!token);
   }, []);
 
   // Применение темы
@@ -35,10 +42,26 @@ function App() {
     }
   }, [isDarkMode]);
 
+  const handleThemeToggle = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLoggedIn(false);
+  };
+
   return (
     <div className={`app ${isDarkMode ? 'dark' : 'light'}`}>
       <BrowserRouter>
-        <RoutesWrapper isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+        <Layout
+          isLoggedIn={isLoggedIn}
+          isDarkMode={isDarkMode}
+          onThemeToggle={handleThemeToggle}
+          onLogout={handleLogout}
+        >
+          <RoutesWrapper isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+        </Layout>
         <ToastContainer/>
       </BrowserRouter>
     </div>

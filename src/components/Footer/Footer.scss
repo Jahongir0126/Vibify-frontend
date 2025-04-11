@@ -1,11 +1,13 @@
 @use '../../styles/variables' as *;
 
+
 .footer {
   background: var(--background-elevated);
   backdrop-filter: var(--backdrop-blur);
   padding: $spacing-lg;
   margin-top: auto;
   border-top: 1px solid var(--border-color);
+  z-index: $z-index-footer;
 }
 
 .footer-content {

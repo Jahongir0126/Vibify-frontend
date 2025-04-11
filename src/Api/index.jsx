@@ -89,26 +89,6 @@ const api = {
     }
   },
 
-  getProfile: async (userId) => {
-    try {
-      const response = await apiClient.get(`/profile/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('API get profile error:', error.response?.data);
-      return error.response?.data || { message: 'Ошибка получения профиля' };
-    }
-  },
-
-  updateProfile: async (userId, profileData) => {
-    try {
-      const response = await apiClient.put(`/profile/${userId}`, profileData);
-      return response.data;
-    } catch (error) {
-      console.error('API update profile error:', error.response?.data);
-      return error.response?.data || { message: 'Ошибка обновления профиля' };
-    }
-  },
-
   // ###################### Пользователи ####################
   getAllUsers: async () => {
     try {
@@ -140,30 +120,247 @@ const api = {
     }
   },
 
-  // ###################### Чат ####################
-//   getAllChats: () => {
-//     const res = axios.get(`${BASE_URL}/chat-service/chats`)
-//       .catch((error) => {
-//         return error.response.data;
-//       });
-//     return res;
-//   },
+  // ###################### Сообщения ####################
+  sendMessage: async (messageData) => {
+    try {
+      const response = await apiClient.post('/message', messageData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('API send message error:', error);
+      
+      // Обработка ошибки 409 (Конфликт)
+      if (error.response?.status === 409) {
+        return { 
+          success: false, 
+          error: 'Сообщение уже существует или конфликт данных', 
+          status: 409,
+          details: error.response?.data
+        };
+      }
+      
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Ошибка отправки сообщения',
+        status: error.response?.status,
+        details: error.response?.data
+      };
+    }
+  },
 
-//   getChatMessages: (chatId) => {
-//     const res = axios.get(`${BASE_URL}/chat-service/chats/${chatId}/messages`)
-//       .catch((error) => {
-//         return error.response.data;
-//       });
-//     return res;
-//   },
+  getAllMessages: async () => {
+    try {
+      const response = await apiClient.get('/message');
+      return response.data;
+    } catch (error) {
+      console.error('API get messages error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения сообщений' };
+    }
+  },
 
-//   sendMessage: (chatId, message) => {
-//     const res = axios.post(`${BASE_URL}/chat-service/chats/${chatId}/messages`, message)
-//       .catch((error) => {
-//         return error.response.data;
-//       });
-//     return res;
-//   }
+  getUserMessages: async (userId) => {
+    try {
+      const response = await apiClient.get(`/message/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get user messages error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения сообщений пользователя' };
+    }
+  },
+
+  updateMessage: async (messageId, messageData) => {
+    try {
+      const response = await apiClient.put(`/message/${messageId}`, messageData);
+      return response.data;
+    } catch (error) {
+      console.error('API update message error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка обновления сообщения' };
+    }
+  },
+
+  deleteMessage: async (messageId) => {
+    try {
+      const response = await apiClient.delete(`/message/${messageId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API delete message error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка удаления сообщения' };
+    }
+  },
+
+  // ###################### Профиль ####################
+
+  
+  getProfile: async (userId) => {
+    try {
+      const response = await apiClient.get(`/profile/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get profile error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения профиля' };
+    }
+  },
+
+  updateProfile: async (id, profileData) => {
+    try {
+      const response = await apiClient.patch(`/profile/${id}`, profileData);
+      return response.data;
+    } catch (error) {
+      console.error('API update profile error:', error);
+      // Если ошибка связана с сетью, но данные могли быть сохранены
+      if (error.code === 'ERR_NETWORK') {
+        return { success: true, message: 'Данные могли быть сохранены, но произошла ошибка соединения' };
+      }
+      return error.response?.data || { message: 'Ошибка обновления профиля' };
+    }
+  },
+
+  createProfile: async (profileData) => {
+    try {
+      const response = await apiClient.post('/profile', profileData);
+      return response.data;
+    } catch (error) {
+      console.error('API create profile error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка создания профиля' };
+    }
+  },
+
+  getAllProfiles: async () => {
+    try {
+      const response = await apiClient.get('/profile');
+      return response.data;
+    } catch (error) {
+      console.error('API get profiles error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения профилей' };
+    }
+  },
+
+  getProfileById: async (id) => {
+    try {
+      const response = await apiClient.get(`/profile/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get profile error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения профиля' };
+    }
+  },
+
+  deleteProfile: async (id) => {
+    try {
+      const response = await apiClient.delete(`/profile/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API delete profile error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка удаления профиля' };
+    }
+  },
+
+  // ###################### Предпочтения ####################
+  createPreferences: async (preferencesData) => {
+    try {
+      const response = await apiClient.post('/preferences', preferencesData);
+      return response.data;
+    } catch (error) {
+      console.error('API create preferences error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка создания предпочтений' };
+    }
+  },
+
+  getAllPreferences: async () => {
+    try {
+      const response = await apiClient.get('/preferences');
+      return response.data;
+    } catch (error) {
+      console.error('API get preferences error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения предпочтений' };
+    }
+  },
+
+  getPreferencesById: async (id) => {
+    try {
+      const response = await apiClient.get(`/preferences/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get preferences error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения предпочтений' };
+    }
+  },
+
+  updatePreferences: async (id, preferencesData) => {
+    try {
+      const response = await apiClient.patch(`/preferences/${id}`, preferencesData);
+      return response.data;
+    } catch (error) {
+      console.error('API update preferences error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка обновления предпочтений' };
+    }
+  },
+
+  deletePreferences: async (id) => {
+    try {
+      const response = await apiClient.delete(`/preferences/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API delete preferences error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка удаления предпочтений' };
+    }
+  },
+
+  // ###################### Лайки ####################
+  checkLike: async (likerId, likedId) => {
+    try {
+      const response = await apiClient.post('/likes/check', {
+        likerId,
+        likedId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('API check like error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка проверки лайка' };
+    }
+  },
+
+  createLike: async (likerId, likedId) => {
+    try {
+      const response = await apiClient.post('/likes', {
+        likerId,
+        likedId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('API create like error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка создания лайка' };
+    }
+  },
+
+  getAllLikes: async () => {
+    try {
+      const response = await apiClient.get('/likes');
+      return response.data;
+    } catch (error) {
+      console.error('API get likes error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения лайков' };
+    }
+  },
+
+  getUserLikes: async (userId) => {
+    try {
+      const response = await apiClient.get(`/likes/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get user likes error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения лайков пользователя' };
+    }
+  },
+
+  deleteLike: async (likeId) => {
+    try {
+      const response = await apiClient.delete(`/likes/${likeId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API delete like error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка удаления лайка' };
+    }
+  },
 };
 
 export default api; 

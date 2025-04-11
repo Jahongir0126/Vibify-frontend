@@ -3,7 +3,7 @@
 .navbar {
   position: fixed;
   top: 0;
-  left: 60px;
+  left: 0;
   right: 0;
   height: 60px;
   background: var(--card-background);
@@ -71,6 +71,7 @@
     border-radius: $border-radius-full;
     color: var(--text-primary);
     transition: $transition-fast;
+    background: var(--hover-background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +81,7 @@
     &:hover {
       background: var(--hover-background);
       transform: rotate(15deg);
+      color: var(--accent-primary);
     }
 
     svg {
