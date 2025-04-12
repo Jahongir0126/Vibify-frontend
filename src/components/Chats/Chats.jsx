@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import MessageList from './MessageList';
-import MessageInput from './MessageInput';
+import MessageList from '../MessageList/MessageList';
+import MessageInput from '../MessageInput/MessageInput';
 import './Chats.scss';
 
-const Chats = ({ currentUserId, selectedUserId }) => {
+const Chats = ({ currentUserId, selectedUserId, onChatUpdated }) => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -199,7 +199,7 @@ const Chats = ({ currentUserId, selectedUserId }) => {
       // Обновим сообщения, чтобы получить правильный ID с сервера
       setTimeout(() => {
         fetchMessages(false);
-        console.log("getting msg2");
+        if (onChatUpdated) onChatUpdated(); // Уведомляем родителя об обновлении
       }, 500);
     } catch (err) {
       console.error('Ошибка при отправке сообщения:', err);

@@ -42,7 +42,7 @@ $dark-theme: (
 @function set-theme-variables($theme) {
   $result: ();
   @each $key, $value in $theme {
-    $result: map-merge($result, ("--#{$key}": $value));
+    $result: map.merge($result, ("--#{$key}": $value));
   }
   @return $result;
 }

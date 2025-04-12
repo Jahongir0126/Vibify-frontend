@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import './MessageList.scss';
 
 const MessageList = ({ messages, currentUserId, onEditMessage, onDeleteMessage }) => {
@@ -106,17 +106,17 @@ const MessageList = ({ messages, currentUserId, onEditMessage, onDeleteMessage }
                 <>
                   <div className="message-text">{message.text}</div>
                   <div className="message-time">
-                    {formatTime(message.timestamp)}
                     {isCurrentUser && (
                       <div className="message-actions">
                         <button onClick={() => handleEdit(message)}>
-                          <FontAwesomeIcon icon={faEdit} />
+                          <FontAwesomeIcon icon={faPencilAlt} />
                         </button>
                         <button onClick={() => handleDelete(message.id)}>
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrashAlt} />
                         </button>
                       </div>
                     )}
+                    {formatTime(message.timestamp)}
                   </div>
                 </>
               )}

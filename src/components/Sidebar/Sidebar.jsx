@@ -9,21 +9,21 @@ import {
   faBell,
   faStar,
   faHome,
-  faSignOutAlt,
   faThumbtack,
-  faBars
+  faBars,
+  faCog
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.scss';
 
 const menuItems = [
   { icon: faHome, label: 'Home', path: '/' },
-  { icon: faUser, label: 'Профиль', path: '/profile' },
+  // { icon: faUser, label: 'Профиль', path: '/profile' }, те
   { icon: faComments, label: 'Чаты', path: '/chats' },
   { icon: faSearch, label: 'Поиск', path: '/search' },
   { icon: faTrophy, label: 'Челленджи', path: '/challenges' },
   { icon: faBell, label: 'Уведомления', path: '/notifications' },
   { icon: faStar, label: 'Избранные', path: '/favorites' },
-  { icon: faSignOutAlt, label: 'Выход', path: '/logout' },
+  { icon: faCog, label: 'Настройка', path: '/settings' },
 ];
 
 const Sidebar = () => {

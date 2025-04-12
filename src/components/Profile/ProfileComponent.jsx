@@ -1,6 +1,6 @@
 import React from 'react';
-import UserInfo from './UserInfo';
-import UserStats from './UserStats';
+import UserInfo from '../UserInfo/UserInfo';
+import UserStats from '../UserStats/UserStats';
 import './ProfileComponent.scss';
 
 const ProfileComponent = ({ userId, currentUserId }) => {

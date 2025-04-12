@@ -11,8 +11,18 @@ const Preferences = ({ userId }) => {
     preferredGender: '',
     ageMin: 18,
     ageMax: 35,
-    locationRadius: 50
+    locationRadius: 50,
+    chatTheme: 'default'
   });
+
+  // Доступные цветовые схемы для чата
+  const chatThemeOptions = [
+    { id: 'default', name: 'Стандартная', primary: '#6c5ce7', secondary: '#fd79a8' },
+    { id: 'blue', name: 'Синяя', primary: '#0984e3', secondary: '#00cec9' },
+    { id: 'green', name: 'Зеленая', primary: '#00b894', secondary: '#55efc4' },
+    { id: 'orange', name: 'Оранжевая', primary: '#e17055', secondary: '#fdcb6e' },
+    { id: 'dark', name: 'Темная', primary: '#2d3436', secondary: '#636e72' }
+  ];
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -24,7 +34,8 @@ const Preferences = ({ userId }) => {
             preferredGender: response.preferredGender || '',
             ageMin: response.ageMin || 18,
             ageMax: response.ageMax || 35,
-            locationRadius: response.locationRadius || 50
+            locationRadius: response.locationRadius || 50,
+            chatTheme: response.chatTheme || 'default'
           });
         }
         setLoading(false);
@@ -43,9 +54,25 @@ const Preferences = ({ userId }) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'preferredGender' ? value : parseInt(value)
+      [name]: name === 'preferredGender' || name === 'chatTheme' ? value : parseInt(value)
     }));
   };
+
+  // Применить цветовую схему
+  const applyThemeColors = (themeId) => {
+    const selectedTheme = chatThemeOptions.find(theme => theme.id === themeId);
+    if (selectedTheme) {
+      document.documentElement.style.setProperty('--accent-primary', selectedTheme.primary);
+      document.documentElement.style.setProperty('--accent-secondary', selectedTheme.secondary);
+    }
+  };
+
+  // Применяем цвета при изменении темы
+  useEffect(() => {
+    if (formData.chatTheme) {
+      applyThemeColors(formData.chatTheme);
+    }
+  }, [formData.chatTheme]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,6 +84,9 @@ const Preferences = ({ userId }) => {
       if (response) {
         setPreferences(response);
         setIsEditing(false);
+        
+        // Применяем цветовую схему при сохранении
+        applyThemeColors(formData.chatTheme);
       }
     } catch (err) {
       setError('Ошибка при обновлении предпочтений');
@@ -75,7 +105,7 @@ const Preferences = ({ userId }) => {
     }
   };
 
-  if (loading) return <div className="preferences loading">Загрузка предпочтений...</div>;
+  // if (loading) return <div className="preferences loading">Загрузка предпочтений...</div>;
   if (error) return <div className="preferences error">{error}</div>;
 
   return (
@@ -145,6 +175,27 @@ const Preferences = ({ userId }) => {
             />
           </div>
 
+          <div className="form-group theme-selection">
+            <label>Цветовая схема чата</label>
+            <div className="theme-options">
+              {chatThemeOptions.map(theme => (
+                <div 
+                  key={theme.id} 
+                  className={`theme-option ${formData.chatTheme === theme.id ? 'selected' : ''}`}
+                  onClick={() => handleInputChange({ target: { name: 'chatTheme', value: theme.id } })}
+                >
+                  <div 
+                    className="theme-color-preview" 
+                    style={{ 
+                      background: `linear-gradient(135deg, ${theme.primary} 0%, ${theme.secondary} 100%)` 
+                    }} 
+                  />
+                  <span>{theme.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <button type="submit" className="save-button">
             Сохранить изменения
           </button>
@@ -162,6 +213,19 @@ const Preferences = ({ userId }) => {
           <div className="info-group">
             <h3>Радиус поиска</h3>
             <p>{preferences?.locationRadius} км</p>
+          </div>
+          <div className="info-group">
+            <h3>Цветовая схема чата</h3>
+            <div className="theme-preview">
+              <div className="theme-color-preview" style={{ 
+                background: `linear-gradient(135deg, ${
+                  chatThemeOptions.find(t => t.id === (preferences?.chatTheme || 'default'))?.primary || '#6c5ce7'
+                } 0%, ${
+                  chatThemeOptions.find(t => t.id === (preferences?.chatTheme || 'default'))?.secondary || '#fd79a8'
+                } 100%)` 
+              }} />
+              <span>{chatThemeOptions.find(t => t.id === (preferences?.chatTheme || 'default'))?.name || 'Стандартная'}</span>
+            </div>
           </div>
         </div>
       )}
