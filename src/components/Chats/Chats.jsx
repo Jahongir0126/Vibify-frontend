@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
-import './Chats.css';
+import './Chats.scss';
 
 const Chats = ({ currentUserId, selectedUserId }) => {
   const [messages, setMessages] = useState([]);

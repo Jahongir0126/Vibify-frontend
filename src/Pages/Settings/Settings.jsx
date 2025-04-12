@@ -1,6 +1,6 @@
 import React from 'react';
 import Preferences from '../../components/Preferences/Preferences';
-import './Settings.css';
+import './Settings.scss';
 
 const Settings = () => {
   const userId = localStorage.getItem('userId');

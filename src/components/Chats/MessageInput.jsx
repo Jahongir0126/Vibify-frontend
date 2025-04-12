@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import './MessageInput.css';
+import './MessageInput.scss';
 
 const MessageInput = ({ onMessageSent, disabled }) => {
   const [message, setMessage] = useState('');

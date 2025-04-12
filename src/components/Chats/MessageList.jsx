@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import './MessageList.css';
+import './MessageList.scss';
 
 const MessageList = ({ messages, currentUserId, onEditMessage, onDeleteMessage }) => {
   const [editingId, setEditingId] = useState(null);
