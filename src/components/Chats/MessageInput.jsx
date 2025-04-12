@@ -1,66 +1,37 @@
 import React, { useState } from 'react';
-import api from '../../Api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import './MessageInput.css';
 
-const MessageInput = ({ senderId, receiverId, onMessageSent }) => {
+const MessageInput = ({ onMessageSent, disabled }) => {
   const [message, setMessage] = useState('');
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!message.trim() || sending) return;
-
-    setSending(true);
-    setError(null);
-
-    try {
-      const messageData = {
-        senderId,
-        receiverId,
-        content: message
-      };
-
-      const response = await api.sendMessage(messageData);
-      
-      if (response.success) {
-        setMessage('');
-        onMessageSent && onMessageSent(response.data);
-      } else {
-        // Обработка ошибки при отправке
-        let errorMessage = 'Ошибка при отправке сообщения';
-        
-        if (response.status === 409) {
-          errorMessage = 'Сообщение уже отправлено или есть конфликт данных';
-        } else if (response.error) {
-          errorMessage = response.error;
-        }
-        
-        setError(errorMessage);
-      }
-    } catch (err) {
-      setError('Ошибка при отправке сообщения');
-      console.error('Error sending message:', err);
-    } finally {
-      setSending(false);
+    
+    if (message.trim() && !disabled) {
+      onMessageSent(message);
+      setMessage('');
     }
   };
 
   return (
-    <form className="message-input" onSubmit={handleSubmit}>
-      {error && <div className="error-message">{error}</div>}
-      <div className="input-container">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Введите сообщение..."
-          disabled={sending}
-        />
-        <button type="submit" disabled={sending || !message.trim()}>
-          {sending ? 'Отправка...' : 'Отправить'}
-        </button>
-      </div>
+    <form className="message-input-form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className="message-input"
+        placeholder="Введите сообщение..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        disabled={disabled}
+      />
+      <button 
+        type="submit" 
+        className="send-button"
+        disabled={!message.trim() || disabled}
+      >
+        <FontAwesomeIcon icon={faPaperPlane} />
+      </button>
     </form>
   );
 };

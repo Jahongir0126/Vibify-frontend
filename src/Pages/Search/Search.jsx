@@ -58,10 +58,8 @@ const Search = () => {
         return;
       }
       
-      console.log('Отправка лайка:', { likerId, likedId });
-      
-      // Отправляем лайк на сервер
-      fetch('http://localhost:3000/likes', {
+      // Сначала проверяем, существует ли уже лайк
+      fetch('http://localhost:3000/likes/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,18 +73,48 @@ const Search = () => {
       })
       .then(response => {
         if (!response.ok) {
-          throw new Error(`Ошибка при добавлении лайка: ${response.status}`);
+          throw new Error(`Ошибка при проверке лайка: ${response.status}`);
         }
-        // Проверяем, содержит ли ответ какой-либо текст
         return response.text().then(text => {
-          return text ? JSON.parse(text) : { success: true };
+          return text ? JSON.parse(text) : false;
         });
       })
-      .then(data => {
-        console.log('Лайк успешно добавлен:', data);
+      .then(exists => {
+        if (exists) {
+          console.log('Лайк уже существует');
+          return;
+        }
+        
+        console.log('Отправка нового лайка:', { likerId, likedId });
+        
+        // Если лайк не существует, создаем его
+        return fetch('http://localhost:3000/likes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ 
+            likerId, 
+            likedId 
+          }),
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Ошибка при добавлении лайка: ${response.status}`);
+          }
+          // Проверяем, содержит ли ответ какой-либо текст
+          return response.text().then(text => {
+            return text ? JSON.parse(text) : { success: true };
+          });
+        })
+        .then(data => {
+          console.log('Лайк успешно добавлен:', data);
+        });
       })
       .catch(error => {
-        console.error('Ошибка при отправке лайка:', error.message);
+        console.error('Ошибка при обработке лайка:', error.message);
       });
     } catch (error) {
       console.error('Ошибка при декодировании токена:', error);
@@ -97,7 +125,31 @@ const Search = () => {
     console.log('Skipped user:', userId);
   };
 
+  // Получаем ID текущего пользователя из токена
+  const getCurrentUserId = () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return null;
+      
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(base64));
+      return payload.id || payload.userId;
+    } catch (error) {
+      console.error('Ошибка при получении ID пользователя:', error);
+      return null;
+    }
+  };
+
+  const currentUserId = getCurrentUserId();
+
   const filteredUsers = profiles.filter(user => {
+    // Исключаем собственный профиль
+    if (currentUserId && user.userId === currentUserId) {
+      return false;
+    }
+    
+    // Применяем остальные фильтры
     if (filters.preferred_gender && user.gender !== filters.preferred_gender) {
       return false;
     }

@@ -127,6 +127,17 @@
       color: var(--text-primary);
     }
   }
+
+  &.chat {
+    &:hover {
+      background: var(--active-background);
+      color: #3498db;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
 }
 
 // Responsive styles

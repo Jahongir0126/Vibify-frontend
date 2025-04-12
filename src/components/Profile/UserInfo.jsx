@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Api/index';
 import './UserInfo.scss';
 
@@ -12,7 +12,7 @@ const UserInfo = ({ userId, currentUserId }) => {
     location: '',
     birthdate: '',
     avatarUrl: '',
-    photoUrl:''
+    photoUrl: ''
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,12 +23,12 @@ const UserInfo = ({ userId, currentUserId }) => {
       setIsLoading(true);
       try {
         const profileData = await api.getProfileById(userId);
-        
+
         if (profileData && !profileData.message) {
           setUserData({
             username: 'Пользователь', // API не возвращает имя пользователя
             avatar: profileData.avatarUrl || 'https://via.placeholder.com/150',
-            photoUrl:profileData.photoUrl,
+            photoUrl: profileData.photoUrl,
             bio: profileData.bio || 'Информация отсутствует',
             location: profileData.location || 'Не указано',
             joinDate: new Date().toISOString(),
@@ -39,13 +39,13 @@ const UserInfo = ({ userId, currentUserId }) => {
             followingCount: 4,
             isFollowing: false
           });
-          
+
           setFormData({
             bio: profileData.bio || '',
             gender: profileData.gender || '',
             location: profileData.location || '',
             birthdate: profileData.birthdate || '',
-            photoUrl:profileData.photoUrl ||'',
+            photoUrl: profileData.photoUrl || '',
             avatarUrl: profileData.avatarUrl || ''
           });
         } else {
@@ -91,10 +91,10 @@ const UserInfo = ({ userId, currentUserId }) => {
         gender: formData.gender || '',
         location: formData.location || '',
         birthdate: formattedBirthdate,
-        avatarUrl:formData.avatarUrl,
+        avatarUrl: formData.avatarUrl,
         photoUrl: formData.photoUrl  // Используем текущий аватар как значение по умолчанию
       });
-      
+
       // Обновляем данные пользователя независимо от результата,
       // так как данные могут успешно сохраняться в базе даже при ошибке в ответе
       setUserData(prev => ({
@@ -103,19 +103,19 @@ const UserInfo = ({ userId, currentUserId }) => {
         location: formData.location || prev.location,
         gender: formData.gender || prev.gender,
         birthdate: formData.birthdate ? new Date(formData.birthdate).toLocaleDateString() : prev.birthdate,
-        photoUrl:formData.photoUrl || prev.photoUrl,
+        photoUrl: formData.photoUrl || prev.photoUrl,
         avatar: formData.avatarUrl || prev.avatar
       }));
       setIsEditing(false);
       setError(null); // Сбрасываем ошибку при успешном обновлении
       alert('Профиль успешно обновлен');
-      
+
     } catch (err) {
       console.error('Ошибка при обновлении профиля:', err);
       // Даже при ошибке сетевого запроса, завершаем редактирование
       // так как данные могут успешно сохраняться
       setIsEditing(false);
-      
+
       if (err.message.includes('Network Error') || err.code === 'ERR_NETWORK') {
         // Показываем сообщение об ошибке сети, но не блокируем сохранение данных
         console.warn('Проблемы с сетью, но данные могли быть сохранены');
@@ -137,7 +137,7 @@ const UserInfo = ({ userId, currentUserId }) => {
     return <div className="user-info error">Пользователь не найден</div>;
   }
 
-  
+
   return (
     <div className="user-info">
       <div className="user-info__header">
@@ -146,7 +146,7 @@ const UserInfo = ({ userId, currentUserId }) => {
         </div>
         <div className="user-info__actions">
           {userId === currentUserId ? (
-            <button 
+            <button
               className="edit-profile-btn"
               onClick={isEditing ? handleSaveProfile : handleEditProfile}
               disabled={isLoading}
@@ -154,9 +154,9 @@ const UserInfo = ({ userId, currentUserId }) => {
               {isEditing ? 'Сохранить' : 'Редактировать профиль'}
             </button>
           ) : (
-            <button 
+            <button
               className={`follow-btn ${userData.isFollowing ? 'following' : ''}`}
-              onClick={() => {}}
+              onClick={() => { }}
               disabled={isLoading}
             >
               {userData.isFollowing ? 'Отписаться' : 'Подписаться'}
@@ -164,15 +164,15 @@ const UserInfo = ({ userId, currentUserId }) => {
           )}
         </div>
       </div>
-      
+
       <div className="user-info__content">
         <h2 className="user-info__name">{userData.username}</h2>
-        
+
         {isEditing ? (
           <div className="edit-form">
             <div className="form-group">
               <label>О себе:</label>
-              <textarea 
+              <textarea
                 name="bio"
                 value={formData.bio}
                 onChange={handleInputChange}
@@ -181,7 +181,7 @@ const UserInfo = ({ userId, currentUserId }) => {
             </div>
             <div className="form-group">
               <label>Местоположение:</label>
-              <input 
+              <input
                 type="text"
                 name="location"
                 value={formData.location}
@@ -203,7 +203,7 @@ const UserInfo = ({ userId, currentUserId }) => {
             </div>
             <div className="form-group">
               <label>Дата рождения:</label>
-              <input 
+              <input
                 type="date"
                 name="birthdate"
                 value={formData.birthdate}
@@ -212,7 +212,7 @@ const UserInfo = ({ userId, currentUserId }) => {
             </div>
             <div className="form-group">
               <label>URL аватара:</label>
-              <input 
+              <input
                 type="text"
                 name="avatarUrl"
                 value={formData.avatarUrl}
@@ -222,7 +222,7 @@ const UserInfo = ({ userId, currentUserId }) => {
             </div>
             <div className="form-group">
               <label>URL фото:</label>
-              <input 
+              <input
                 type="text"
                 name="photoUrl"
                 value={formData.photoUrl}
@@ -236,9 +236,8 @@ const UserInfo = ({ userId, currentUserId }) => {
             <p className="user-info__bio">{userData.bio}</p>
             <div className="user-info__details">
               <span className="user-info__gender">
-                {userData.gender === 'male' ? 'Мужской' : 
-                 userData.gender === 'female' ? 'Женский' : 
-                 userData.gender === 'other' ? 'Другой' : 'Пол не указан'}
+                {userData.gender === 'male' ? 'Мужской' :
+                  userData.gender === 'female' ? 'Женский' : 'Пол не указан'}
               </span>
               <span className="user-info__location">{userData.location}</span>
               <span className="user-info__birthdate">
@@ -247,10 +246,15 @@ const UserInfo = ({ userId, currentUserId }) => {
               <span className="user-info__join-date">
                 Присоединился: {new Date(userData.joinDate).toLocaleDateString()}
               </span>
+              {userId === currentUserId ? (<></>) : (<>
+                <Link to={ `/chats/${userId}`} className='btn btn-primary mt-4 w-100'
+                >Написать
+                </Link>
+              </>)}
             </div>
           </>
         )}
-        
+
         <div className="user-info__stats">
           <div className="stat-item">
             <span className="stat-value">{userData.followersCount || 0}</span>

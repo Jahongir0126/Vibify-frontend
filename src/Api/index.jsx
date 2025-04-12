@@ -208,7 +208,6 @@ const api = {
       return response.data;
     } catch (error) {
       console.error('API update profile error:', error);
-      // Если ошибка связана с сетью, но данные могли быть сохранены
       if (error.code === 'ERR_NETWORK') {
         return { success: true, message: 'Данные могли быть сохранены, но произошла ошибка соединения' };
       }

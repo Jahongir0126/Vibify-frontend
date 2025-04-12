@@ -1,11 +1,13 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faTimes, faComment } from '@fortawesome/free-solid-svg-icons';
 import './UserCard.scss';
+import { Link } from 'react-router-dom';
 
 const UserCard = ({ user, onLike, onSkip }) => {
   return (
     <div className="user-card">
+      <Link to={`/profile/${user.userId}`}>
       <div className="user-card-image">
         <img src={user.photoUrl} alt="user_image" />
       </div>
@@ -25,7 +27,7 @@ const UserCard = ({ user, onLike, onSkip }) => {
             </span>
           ))}
         </div>
-      </div>
+      </div></Link>
       <div className="user-card-actions">
         <button 
           className="action-button skip"
@@ -33,6 +35,12 @@ const UserCard = ({ user, onLike, onSkip }) => {
         >
           <FontAwesomeIcon icon={faTimes} />
         </button>
+        <Link 
+          to={`/chats/${user.userId}`}
+          className="action-button chat"
+        >
+          <FontAwesomeIcon icon={faComment} />
+        </Link>
         <button 
           className="action-button like"
           onClick={() => onLike(user.userId)}

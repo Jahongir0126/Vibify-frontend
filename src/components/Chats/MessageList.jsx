@@ -1,78 +1,130 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../Api';
+import React, { useState, useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './MessageList.css';
 
-const MessageList = ({ userId }) => {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+const MessageList = ({ messages, currentUserId, onEditMessage, onDeleteMessage }) => {
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState('');
   const [error, setError] = useState(null);
+  const messagesEndRef = useRef(null);
 
+  // Автоматически скрыть сообщение об ошибке через 5 секунд
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        let response;
-        if (userId) {
-          response = await api.getUserMessages(userId);
-        } else {
-          response = await api.getAllMessages();
-        }
-        if (response) {
-          setMessages(response);
-        }
-        setLoading(false);
-      } catch (err) {
-        setError('Ошибка при загрузке сообщений');
-        setLoading(false);
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  // Автоматическая прокрутка к последнему сообщению при обновлении списка
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  if (!messages || messages.length === 0) {
+    return (
+      <div className="message-list-empty">
+        <p>У вас пока нет сообщений. Начните общение!</p>
+      </div>
+    );
+  }
+
+  const formatTime = (isoString) => {
+    try {
+      const date = new Date(isoString);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return '';
+    }
+  };
+
+  const handleEdit = (message) => {
+    setEditingId(message.id);
+    setEditText(message.text);
+  };
+
+  const saveEdit = async (id) => {
+    try {
+      setError(null);
+      const success = await onEditMessage(id, editText);
+      if (success) {
+        setEditingId(null);
       }
-    };
-
-    fetchMessages();
-  }, [userId]);
-
-  const handleDeleteMessage = async (messageId) => {
-    try {
-      await api.deleteMessage(messageId);
-      setMessages(messages.filter(msg => msg.messageId !== messageId));
     } catch (err) {
-      setError('Ошибка при удалении сообщения');
+      console.error('Ошибка при редактировании сообщения:', err);
+      setError('Не удалось отредактировать сообщение');
     }
   };
 
-  const handleUpdateMessage = async (messageId, content) => {
+  const handleDelete = async (id) => {
+    if (!window.confirm('Вы уверены, что хотите удалить это сообщение?')) {
+      return;
+    }
+
     try {
-      const updatedMessage = await api.updateMessage(messageId, { content });
-      setMessages(messages.map(msg => 
-        msg.messageId === messageId ? { ...msg, content } : msg
-      ));
+      setError(null);
+      await onDeleteMessage(id);
     } catch (err) {
-      setError('Ошибка при обновлении сообщения');
+      console.error('Ошибка при удалении сообщения:', err);
+      setError('Не удалось удалить сообщение');
     }
   };
-
-  if (loading) return <div className="message-list loading">Загрузка сообщений...</div>;
-  if (error) return <div className="message-list error">{error}</div>;
 
   return (
     <div className="message-list">
-      {messages.map((message) => (
-        <div key={message.messageId} className={`message ${message.isOwn ? 'own' : ''}`}>
-          <div className="message-content">
-            <div className="message-sender">ID отправителя: {message.senderId}</div>
-            <div className="message-text">{message.content}</div>
-            <div className="message-time">
-              {new Date(message.createdAt).toLocaleTimeString()}
-              <div className="message-actions">
-                <button onClick={() => handleUpdateMessage(message.messageId, prompt('Введите новый текст:', message.content))}>
-                  Редактировать
-                </button>
-                <button onClick={() => handleDeleteMessage(message.messageId)}>
-                  Удалить
-                </button>
-              </div>
+      {error && <div className="message-error">{error}</div>}
+      {messages.map((message, index) => {
+        const isCurrentUser = message.senderId === currentUserId;
+        const isEditing = message.id === editingId;
+        
+        return (
+          <div 
+            key={message.id || index} 
+            className={`message-item ${isCurrentUser ? 'message-outgoing' : 'message-incoming'}`}
+          >
+            <div className="message-content">
+              {isEditing ? (
+                <div className="message-edit">
+                  <textarea
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    className="edit-textarea"
+                  />
+                  <div className="edit-actions">
+                    <button onClick={() => saveEdit(message.id)}>Сохранить</button>
+                    <button onClick={() => setEditingId(null)}>Отмена</button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="message-text">{message.text}</div>
+                  <div className="message-time">
+                    {formatTime(message.timestamp)}
+                    {isCurrentUser && (
+                      <div className="message-actions">
+                        <button onClick={() => handleEdit(message)}>
+                          <FontAwesomeIcon icon={faEdit} />
+                        </button>
+                        <button onClick={() => handleDelete(message.id)}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+      <div ref={messagesEndRef} />
     </div>
   );
 };
