@@ -5,6 +5,8 @@
   box-shadow: 0 2px 8px var(--shadow-color);
   transition: all 0.3s ease;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &__header {
     display: flex;
@@ -13,6 +15,7 @@
     text-align: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    margin-top: 10px;
   }
 
   &__avatar {
@@ -45,11 +48,11 @@
       transition: all 0.3s ease;
 
       &.edit-profile-btn {
-        background: var(--primary-color);
+        background: var(--accent-primary);
         color: white;
 
         &:hover {
-          background: var(--primary-color-dark);
+          background: var(--accent-secondary);
           transform: translateY(-2px);
         }
       }
@@ -129,7 +132,7 @@
       .stat-value {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--primary-color);
+        color: var(--accent-primary);
       }
 
       .stat-label {

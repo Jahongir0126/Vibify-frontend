@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../Api';
+import { toast } from 'react-toastify';
 import './Preferences.scss';
 
-const Preferences = ({ userId }) => {
+const Preferences = () => {
   const [preferences, setPreferences] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  
   const [formData, setFormData] = useState({
     preferredGender: '',
     ageMin: 18,
@@ -24,31 +26,62 @@ const Preferences = ({ userId }) => {
     { id: 'dark', name: 'Темная', primary: '#2d3436', secondary: '#636e72' }
   ];
 
-  useEffect(() => {
-    const fetchPreferences = async () => {
-      try {
-        const response = await api.getPreferencesById(userId);
-        if (response) {
-          setPreferences(response);
-          setFormData({
-            preferredGender: response.preferredGender || '',
-            ageMin: response.ageMin || 18,
-            ageMax: response.ageMax || 35,
-            locationRadius: response.locationRadius || 50,
-            chatTheme: response.chatTheme || 'default'
-          });
-        }
+  // Получаем userId из токена
+  const getUserIdFromToken = () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return null;
+      
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(atob(base64));
+      return payload.id || payload.userId;
+    } catch (err) {
+      console.error('Ошибка при получении ID пользователя:', err);
+      return null;
+    }
+  };
+
+  const fetchPreferences = async () => {
+    const userId = getUserIdFromToken();
+    if (!userId) {
+      setError('Необходима авторизация');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await api.getPreferencesById(userId);
+      if (response && !response.message) {
+        setPreferences(response);
+        setFormData({
+          preferredGender: response.preferredGender || '',
+          ageMin: response.ageMin || 18,
+          ageMax: response.ageMax || 35,
+          locationRadius: response.locationRadius || 50,
+          chatTheme: response.chatTheme || 'default'
+        });
+        setIsEditing(false);
+      } else {
+        setPreferences(null);
+        setIsEditing(true);
+      }
+      setLoading(false);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setPreferences(null);
+        setIsEditing(true);
         setLoading(false);
-      } catch (err) {
+      } else {
         setError('Ошибка при загрузке предпочтений');
         setLoading(false);
       }
-    };
-
-    if (userId) {
-      fetchPreferences();
     }
-  }, [userId]);
+  };
+
+  useEffect(() => {
+    fetchPreferences();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -67,7 +100,6 @@ const Preferences = ({ userId }) => {
     }
   };
 
-  // Применяем цвета при изменении темы
   useEffect(() => {
     if (formData.chatTheme) {
       applyThemeColors(formData.chatTheme);
@@ -75,56 +107,149 @@ const Preferences = ({ userId }) => {
   }, [formData.chatTheme]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    
+    const userId = getUserIdFromToken();
+    if (!userId) {
+      setError('Необходима авторизация');
+      return;
+    }
+
     try {
-      const response = await api.updatePreferences(userId, {
+      const preferenceData = {
         ...formData,
         userId
-      });
-      if (response) {
+      };
+
+      let response;
+      
+      if (preferences?.id) {
+        response = await api.updatePreferences(preferences.id, preferenceData);
+        // console.log(response);
+        
+      } else {
+        response = await api.createPreferences(preferenceData);
+        // console.log(response);
+
+      }
+
+      // Проверяем успешность ответа
+      if (response && !response.message) {
+        // Обновляем состояние
         setPreferences(response);
         setIsEditing(false);
-        
-        // Применяем цветовую схему при сохранении
+        setError(null);
         applyThemeColors(formData.chatTheme);
+
+        // Показываем уведомление об успехе
+        toast.success(preferences?.id ? 'Настройки успешно обновлены' : 'Настройки успешно созданы', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark"
+        });
+      } else {
+        // В случае ошибки в ответе
+        setError('Ошибка при сохранении предпочтений');
+        toast.error('Ошибка при сохранении настроек', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark"
+        });
       }
     } catch (err) {
-      setError('Ошибка при обновлении предпочтений');
+      // В случае ошибки запроса
+      setError('Ошибка при сохранении предпочтений');
+      toast.error('Ошибка при сохранении настроек', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark"
+      });
     }
   };
 
   const handleDelete = async () => {
+    if (!preferences?.id) {
+      return;
+    }
+
     if (window.confirm('Вы уверены, что хотите удалить предпочтения?')) {
       try {
-        await api.deletePreferences(userId);
-        setPreferences(null);
-        setIsEditing(true);
+        await api.deletePreferences(preferences.id);
+        toast.success('Настройки успешно удалены', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          onClose: () => {
+            setPreferences(null);
+            setIsEditing(true);
+            setFormData({
+              preferredGender: '',
+              ageMin: 18,
+              ageMax: 35,
+              locationRadius: 50,
+              chatTheme: 'default'
+            });
+          }
+        });
       } catch (err) {
+        toast.error('Ошибка при удалении настроек', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         setError('Ошибка при удалении предпочтений');
       }
     }
   };
 
-  // if (loading) return <div className="preferences loading">Загрузка предпочтений...</div>;
-  if (error) return <div className="preferences error">{error}</div>;
+  if (loading) {
+    return <div className="preferences-loading">Загрузка...</div>;
+  }
 
   return (
     <div className="preferences">
       <div className="preferences-header">
-        <h2>Предпочтения</h2>
-        <div className="preferences-actions">
-          <button onClick={() => setIsEditing(!isEditing)}>
-            {isEditing ? 'Отменить' : 'Редактировать'}
-          </button>
-          {preferences && (
+        <h2>{preferences ? 'Настройки поиска' : 'Создание настроек поиска'}</h2>
+        {preferences && (
+          <div className="preferences-actions ms-5">
+            <button onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? 'Отменить' : 'Редактировать'}
+            </button>
             <button onClick={handleDelete} className="delete-button">
               Удалить
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
-      {isEditing ? (
+      {error && <div className="preferences-error">{error}</div>}
+
+      {(isEditing || !preferences) ? (
         <form className="preferences-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Предпочитаемый пол</label>
@@ -197,7 +322,7 @@ const Preferences = ({ userId }) => {
           </div>
 
           <button type="submit" className="save-button">
-            Сохранить изменения
+            {preferences ? 'Сохранить изменения' : 'Создать настройки'}
           </button>
         </form>
       ) : (
@@ -233,4 +358,4 @@ const Preferences = ({ userId }) => {
   );
 };
 
-export default Preferences; 
+export default Preferences;

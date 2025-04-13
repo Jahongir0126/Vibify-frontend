@@ -1,4 +1,5 @@
 @use './theme.scss' as theme;
+@use 'variables' as *;
 
 // Переменные для отступов
 $spacing-sm: 0.5rem;
@@ -133,6 +134,17 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+// Toast styles
+.Toastify__toast {
+  z-index: 2100;
+  // z-index: var(--z-idex-toast);
+
+}
+
+.Toastify__toast-container {
+  z-index: $z-index-toast !important;
+}
+
 // Медиа-запросы для доступности
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -191,4 +203,4 @@ h1, h2, h3, h4, h5, h6 {
 
 .bg-secondary {
   background-color: var(--bg-secondary);
-} 
+}

@@ -36,6 +36,7 @@ $z-index-navbar: 1100;
 $z-index-modal: 2000;
 $z-index-dropdown: 1200;
 $z-index-tooltip: 1300;
+$z-index-toast: 2100; // Добавляем z-index для toast
 $z-index-footer: 1100;
 
 // Border radius
@@ -125,4 +126,4 @@ $line-height-loose: 1.75;
 }
 
 // Transitions
-$transition-default: all 0.3s ease; 
+$transition-default: all 0.3s ease;

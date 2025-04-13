@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Api/index';
 import './UserInfo.scss';
+import { toast } from 'react-toastify';
 
 const UserInfo = ({ userId, currentUserId }) => {
   const [userData, setUserData] = useState(null);
@@ -107,8 +108,11 @@ const UserInfo = ({ userId, currentUserId }) => {
         avatar: formData.avatarUrl || prev.avatar
       }));
       setIsEditing(false);
-      setError(null); // Сбрасываем ошибку при успешном обновлении
-      alert('Профиль успешно обновлен');
+      setError(null); 
+      toast.success('Профиль успешно обновлен',{
+        theme: "dark",
+        position: "top-right",
+      })
 
     } catch (err) {
       console.error('Ошибка при обновлении профиля:', err);

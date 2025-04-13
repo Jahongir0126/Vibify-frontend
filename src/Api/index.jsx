@@ -258,7 +258,16 @@ const api = {
   // ###################### Предпочтения ####################
   createPreferences: async (preferencesData) => {
     try {
-      const response = await apiClient.post('/preferences', preferencesData);
+      // Форматируем данные перед отправкой
+      const formattedData = {
+        userId: preferencesData.userId,
+        preferredGender: preferencesData.preferredGender || null,
+        ageMin: parseInt(preferencesData.ageMin) || 18,
+        ageMax: parseInt(preferencesData.ageMax) || 35,
+        locationRadius: parseInt(preferencesData.locationRadius) || 50,
+      };
+
+      const response = await apiClient.post('/preferences', formattedData);
       return response.data;
     } catch (error) {
       console.error('API create preferences error:', error.response?.data);
@@ -276,9 +285,9 @@ const api = {
     }
   },
 
-  getPreferencesById: async (id) => {
+  getPreferencesById: async (userId) => {
     try {
-      const response = await apiClient.get(`/preferences/${id}`);
+      const response = await apiClient.get(`/preferences/${userId}`);
       return response.data;
     } catch (error) {
       console.error('API get preferences error:', error.response?.data);
@@ -287,8 +296,17 @@ const api = {
   },
 
   updatePreferences: async (id, preferencesData) => {
+    
     try {
-      const response = await apiClient.patch(`/preferences/${id}`, preferencesData);
+      // Форматируем данные перед отправкой
+      const formattedData = {
+        preferredGender: preferencesData.preferredGender,
+        ageMin: parseInt(preferencesData.ageMin),
+        ageMax: parseInt(preferencesData.ageMax),
+        locationRadius: parseInt(preferencesData.locationRadius),
+      };
+
+      const response = await apiClient.patch(`/preferences/${id}`, formattedData);
       return response.data;
     } catch (error) {
       console.error('API update preferences error:', error.response?.data);
@@ -364,4 +382,4 @@ const api = {
   },
 };
 
-export default api; 
+export default api;

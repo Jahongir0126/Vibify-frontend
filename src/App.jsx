@@ -12,31 +12,22 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Загрузка темы из localStorage при запуске
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark');
     } else {
-      // Проверка системных предпочтений
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     }
-    
-    // Check if user is logged in
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
   
-  // Применение темы
   useEffect(() => {
-    // Сохранение в localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    
-    // Применение темы к документу
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
 
-    // Установка мета-тега для цвета темы мобильного браузера
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
       metaThemeColor.setAttribute('content', isDarkMode ? '#1a1a1a' : '#ffffff');
@@ -56,6 +47,7 @@ function App() {
     <AuthProvider>
       <Router>
         <div className={`app ${isDarkMode ? 'dark' : 'light'}`}>
+        <ToastContainer />
           <Layout
             isLoggedIn={isLoggedIn}
             isDarkMode={isDarkMode}
@@ -71,7 +63,6 @@ function App() {
                 />
               } />
             </Routes>
-            <ToastContainer />
           </Layout>
         </div>
       </Router>
