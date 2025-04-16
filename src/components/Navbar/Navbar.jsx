@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   faUser,
   faSignOutAlt,
@@ -11,11 +12,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './Navbar.scss';
 
-const Navbar = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
+const Navbar = ({ isDarkMode, onThemeToggle }) => {
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
 
   const handleLogout = () => {
-    onLogout();
+    logout();
     navigate('/login');
   };
 
@@ -64,11 +66,9 @@ const Navbar = ({ isLoggedIn, isDarkMode, onThemeToggle, onLogout }) => {
             </>
           ) : (
             <>
-              <Link to="/login" className="nav-link ms-3" title={"Войти"}>
+              <Link to="/login" className="nav-link ms-3" title="Войти">
                 <FontAwesomeIcon icon={faSignInAlt} />
-                
               </Link>
-
             </>
           )}
         </div>

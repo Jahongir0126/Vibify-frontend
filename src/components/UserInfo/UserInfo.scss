@@ -205,4 +205,117 @@
     font-weight: 500;
     text-align: center;
   }
+}
+
+.profile-creation {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+
+  h2 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      input, select, textarea {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-input);
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+        }
+
+        &::placeholder {
+          color: var(--text-placeholder);
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+        padding-right: 2.5rem;
+      }
+    }
+
+    .submit-button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+
+      &:hover {
+        background: var(--primary-hover);
+      }
+
+      &:disabled {
+        background: var(--disabled-color);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// CSS переменные для темной и светлой темы
+:root {
+  --primary-color: #6c5ce7;
+  --primary-hover: #5a4bd1;
+  --primary-rgb: 108, 92, 231;
+  --bg-card: #ffffff;
+  --bg-input: #f8f9fa;
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --text-placeholder: #b2bec3;
+  --border-color: #dfe6e9;
+  --disabled-color: #b2bec3;
+}
+
+[data-theme="dark"] {
+  --bg-card: #2d3436;
+  --bg-input: #353b48;
+  --text-primary: #f5f6fa;
+  --text-secondary: #dfe6e9;
+  --text-placeholder: #636e72;
+  --border-color: #4a4f57;
 } 

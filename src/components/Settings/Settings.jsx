@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import Preferences from '../Preferences/Preferences';
+import api from '../../Api';
 import './Settings.scss';
 
 const Settings = () => {

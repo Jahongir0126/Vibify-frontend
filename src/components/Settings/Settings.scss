@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../styles/variables' as *;
 
 .settings {
@@ -247,7 +248,7 @@
         color: white;
         
         &:hover {
-          background-color: darken($color: #ffbb33, $amount: 10%);
+          background-color: color.adjust(#ffbb33, $lightness: -10%);
         }
       }
       
@@ -256,7 +257,7 @@
         color: white;
         
         &:hover {
-          background-color: darken($color: #ff6b6b, $amount: 10%);
+          background-color: color.adjust(#ff6b6b, $lightness: -10%);
         }
       }
     }

@@ -9,7 +9,6 @@ import { AuthProvider } from './contexts/AuthContext';
 import Settings from './components/Settings/Settings';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
@@ -20,10 +19,8 @@ function App() {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
     }
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token);
   }, []);
-  
+
   useEffect(() => {
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
@@ -38,31 +35,20 @@ function App() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setIsLoggedIn(false);
-  };
-
   return (
     <AuthProvider>
       <Router>
         <div className={`app ${isDarkMode ? 'dark' : 'light'}`}>
-        <ToastContainer />
+          <ToastContainer />
           <Layout
-            isLoggedIn={isLoggedIn}
             isDarkMode={isDarkMode}
             onThemeToggle={handleThemeToggle}
-            onLogout={handleLogout}
           >
-            <Routes>
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/*" element={
-                <RoutesWrapper 
-                  isDarkMode={isDarkMode}
-                  setIsDarkMode={setIsDarkMode}
-                />
-              } />
-            </Routes>
+            <RoutesWrapper
+              isDarkMode={isDarkMode}
+              setIsDarkMode={setIsDarkMode}
+            />
+
           </Layout>
         </div>
       </Router>

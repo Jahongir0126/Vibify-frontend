@@ -12,8 +12,9 @@ const UserCard = ({ user, onLike, onSkip }) => {
         <img src={user.photoUrl} alt="user_image" />
       </div>
       <div className="user-card-content">
-        <h3 className="user-card-name">{user.bio || 'Нет информации'}</h3>
+        <h3 className="user-card-name">{user.nickname || 'Нет информации'}</h3>
         <div className="user-card-details">
+          <h5 className="user-card-name">О себе : {user.bio || 'Не указан'}</h5>
           <p><strong>Город:</strong> {user.location || 'Не указан'}</p>
           <p><strong>Пол:</strong> {user.gender === 'male' ? 'Мужской' : user.gender === 'female' ? 'Женский' : 'Другой'}</p>
           {user.birthdate && (

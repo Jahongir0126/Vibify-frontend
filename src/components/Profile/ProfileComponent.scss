@@ -8,8 +8,7 @@
   min-height: calc(100vh - 120px);
 
   .profile-container {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+    display: flex;
     gap: 2rem;
 
     @media (max-width: 992px) {

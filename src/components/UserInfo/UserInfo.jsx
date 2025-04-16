@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Api/index';
 import './UserInfo.scss';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../contexts/AuthContext';
 
 const UserInfo = ({ userId, currentUserId }) => {
+  const { currentUser } = useAuth();
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -17,7 +19,7 @@ const UserInfo = ({ userId, currentUserId }) => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [showCreateProfile, setShowCreateProfile] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -27,7 +29,7 @@ const UserInfo = ({ userId, currentUserId }) => {
 
         if (profileData && !profileData.message) {
           setUserData({
-            username: 'Пользователь', // API не возвращает имя пользователя
+            nickname: profileData.nickname|| 'Пользователь',
             avatar: profileData.avatarUrl || 'https://via.placeholder.com/150',
             photoUrl: profileData.photoUrl,
             bio: profileData.bio || 'Информация отсутствует',
@@ -50,11 +52,19 @@ const UserInfo = ({ userId, currentUserId }) => {
             avatarUrl: profileData.avatarUrl || ''
           });
         } else {
-          throw new Error(profileData?.message || 'Не удалось загрузить профиль');
+          setUserData(null);
+          if (userId === currentUserId) {
+            setShowCreateProfile(true);
+          }
         }
       } catch (err) {
         console.error('Ошибка при загрузке данных пользователя:', err);
-        if (err.message.includes('Network Error') || err.code === 'ERR_NETWORK') {
+        setUserData(null);
+        
+        if (err.message === 'Profile not found' && userId === currentUserId) {
+          setShowCreateProfile(true);
+          setError(null);
+        } else if (err.message.includes('Network Error') || err.code === 'ERR_NETWORK') {
           setError('Не удалось подключиться к серверу. Пожалуйста, проверьте соединение.');
         } else {
           setError('Не удалось загрузить данные профиля');
@@ -129,6 +139,55 @@ const UserInfo = ({ userId, currentUserId }) => {
     }
   };
 
+  const handleCreateProfile = async () => {
+    setIsLoading(true);
+    try {
+      const newProfileData = {
+        bio: '',
+        gender: '',
+        location: '',
+        birthdate: null,
+        avatarUrl: 'https://via.placeholder.com/150',
+        photoUrl: '',
+        userId: userId
+      };
+
+      const result = await api.createProfile(newProfileData);
+      
+      if (result) {
+        setUserData({
+          nickname: localStorage.getItem("nickname") || 'Пользователь',
+          avatar: newProfileData.avatarUrl,
+          photoUrl: newProfileData.photoUrl,
+          bio: newProfileData.bio || 'Информация отсутствует',
+          location: newProfileData.location || 'Не указано',
+          joinDate: new Date().toISOString(),
+          gender: newProfileData.gender || 'Не указано',
+          birthdate: 'Не указано',
+          userId: userId,
+          followersCount: 0,
+          followingCount: 0,
+          isFollowing: false
+        });
+        
+        setFormData(newProfileData);
+        setShowCreateProfile(false);
+        toast.success('Профиль успешно создан', {
+          theme: "dark",
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      console.error('Ошибка при создании профиля:', err);
+      toast.error('Не удалось создать профиль', {
+        theme: "dark",
+        position: "top-right",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isLoading) {
     return <div className="user-info loading">Загрузка данных пользователя...</div>;
   }
@@ -137,10 +196,92 @@ const UserInfo = ({ userId, currentUserId }) => {
     return <div className="user-info error">{error}</div>;
   }
 
-  if (!userData) {
-    return <div className="user-info error">Пользователь не найден</div>;
+  if (!userData && !showCreateProfile) {
+    return (
+      <div className="user-info no-profile">
+        <h3>Профиль не найден</h3>
+        <p>У вас еще нет профиля. Хотите создать его сейчас?</p>
+        <button 
+          className="create-profile-btn"
+          onClick={() => setShowCreateProfile(true)}
+        >
+          Создать профиль
+        </button>
+      </div>
+    );
   }
 
+  if (!userData && showCreateProfile) {
+    return (
+      <div className="profile-creation">
+        <h2>Создание профиля</h2>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          handleCreateProfile();
+        }} className="profile-form">
+          <div className="form-group">
+            <label htmlFor="bio">О себе</label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleInputChange}
+              placeholder="Расскажите о себе..."
+              rows="4"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="location">Местоположение</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              placeholder="Ваш город"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="gender">Пол</label>
+            <select
+              id="gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="">Выберите пол</option>
+              <option value="male">Мужской</option>
+              <option value="female">Женский</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="birthDate">Дата рождения</label>
+            <input
+              type="date"
+              id="birthDate"
+              name="birthDate"
+              value={formData.birthDate}
+              onChange={handleInputChange}
+              max={new Date().toISOString().split('T')[0]}
+              required
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="submit-button" disabled={isLoading}>
+              {isLoading ? 'Создание...' : 'Создать профиль'}
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="user-info">
@@ -170,7 +311,7 @@ const UserInfo = ({ userId, currentUserId }) => {
       </div>
 
       <div className="user-info__content">
-        <h2 className="user-info__name">{userData.username}</h2>
+        <h2 className="user-info__name">{userData.nickname}</h2>
 
         {isEditing ? (
           <div className="edit-form">
