@@ -1,0 +1,62 @@
+@use "sass:map";
+
+// Переменные для светлой темы
+$light-theme: (
+  "primary-color": #5283de,
+  "primary-color-dark": #3a6cca,
+  "secondary-color": #60aff0,
+  "secondary-color-dark": #4c9ee3,
+  "text-primary": #333333,
+  "text-secondary": #666666,
+  "bg-primary": #f8f9fa,
+  "bg-secondary": #ffffff,
+  "card-bg": #ffffff,
+  "border-color": #e0e6ed,
+  "gray-300": #d1d5db,
+  "shadow-color": rgba(0, 0, 0, 0.05),
+  "success-color": #60c060,
+  "warning-color": #ffbb33,
+  "error-color": #ff6b6b
+);
+
+// Переменные для темной темы
+$dark-theme: (
+  "primary-color": #5283de,
+  "primary-color-dark": #3a6cca,
+  "secondary-color": #60aff0,
+  "secondary-color-dark": #4c9ee3,
+  "text-primary": #ffffff,
+  "text-secondary": #b0b0b0,
+  "bg-primary": #121212,
+  "bg-secondary": #1e1e1e,
+  "card-bg": #1e1e1e,
+  "border-color": #2c2c2c,
+  "gray-300": #3d3d3d,
+  "shadow-color": rgba(0, 0, 0, 0.2),
+  "success-color": #60c060,
+  "warning-color": #ffbb33,
+  "error-color": #ff6b6b
+);
+
+// Функция для установки CSS переменных
+@function set-theme-variables($theme) {
+  $result: ();
+  @each $key, $value in $theme {
+    $result: map.merge($result, ("--#{$key}": $value));
+  }
+  @return $result;
+}
+
+// Установка переменных для светлой темы
+:root {
+  @each $key, $value in set-theme-variables($light-theme) {
+    #{$key}: $value;
+  }
+}
+
+// Установка переменных для темной темы
+[data-theme="dark"] {
+  @each $key, $value in set-theme-variables($dark-theme) {
+    #{$key}: $value;
+  }
+} 

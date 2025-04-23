@@ -1,0 +1,27 @@
+@use '../../styles/variables' as *;
+
+.settings-page {
+  // Styles for Settings page
+}
+
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+  
+  h1 {
+    color: var(--text-primary);
+    margin-bottom: $spacing-xl;
+    text-align: center;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.settings-content {
+  background-color: var(--card-background);
+  border-radius: $border-radius-lg;
+  box-shadow: 0 2px 10px var(--shadow-color);
+  padding: $spacing-lg;
+  color: var(--text-primary);
+}

@@ -1,0 +1,97 @@
+@use '../../styles/variables' as *;
+
+.app-layout {
+  min-height: 100vh;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: $transition-base;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  // Theme variables
+  &.dark {
+    --background-primary: #{$dark-bg};
+    --background-secondary: #{$darker-bg};
+    --text-primary: #{$text-light};
+    --text-secondary: #{$text-light-secondary};
+    --border-color: #{$border-dark};
+    --card-background: rgba(18, 18, 18, 0.8);
+    --hover-background: rgba(255, 255, 255, 0.05);
+    --active-background: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --navbar-blur: blur(10px);
+    --card-blur: blur(8px);
+  }
+
+  &.light {
+    --background-primary: #{$light-bg};
+    --background-secondary: #{$lighter-bg};
+    --text-primary: #{$text-dark};
+    --text-secondary: #{$text-dark-secondary};
+    --border-color: #{$border-light};
+    --card-background: rgba(255, 255, 255, 0.8);
+    --hover-background: rgba(0, 0, 0, 0.05);
+    --active-background: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --navbar-blur: blur(8px);
+    --card-blur: blur(6px);
+  }
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl calc(#{$spacing-lg} + 60px);
+  position: relative;
+  z-index: 1;
+  transition: padding-left 0.3s ease;
+
+  // Adjust padding when sidebar is pinned
+  &.sidebar-pinned {
+    padding-left: calc(#{$spacing-lg} + 200px);
+  }
+
+  @supports (backdrop-filter: blur(10px)) {
+    background: transparent;
+  }
+}
+
+// Responsive styles
+@media (max-width: $desktop) {
+  .main-content {
+    max-width: 100%;
+    // padding: calc(#{$spacing-xl} + 60px) $spacing-lg $spacing-xl $spacing-lg;
+    
+    &.sidebar-pinned {
+      padding-left: calc(#{$spacing-lg} + 200px);
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-layout {
+    padding-bottom: 60px; // Space for mobile navigation
+  }
+
+  .main-content {
+    padding: calc(#{$spacing-lg} + 60px) $spacing-md $spacing-lg $spacing-md;
+    // Reset padding for mobile
+    &.sidebar-pinned {
+      padding-left: $spacing-md;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .main-content {
+    padding: calc(#{$spacing-md} + 60px) $spacing-sm $spacing-md $spacing-sm;
+    
+    // Reset padding for mobile
+    &.sidebar-pinned {
+      padding-left: $spacing-sm;
+    }
+  }
+}

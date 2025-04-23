@@ -1,0 +1,149 @@
+@use '../../styles/variables' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--card-background);
+  backdrop-filter: var(--navbar-blur);
+  -webkit-backdrop-filter: var(--navbar-blur);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 $spacing-lg;
+  z-index: $z-index-navbar;
+  transition: $transition-base;
+  box-shadow: 0 1px 0 0 var(--border-color);
+
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+    gap: $spacing-md;
+  }
+
+  &-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &-logo {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    transition: $transition-fast;
+
+    &:hover {
+      color: var(--accent-primary);
+    }
+
+    img {
+      height: 32px;
+      width: auto;
+    }
+  }
+
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  .theme-toggle {
+    padding: $spacing-sm;
+    border-radius: $border-radius-full;
+    color: var(--text-primary);
+    transition: $transition-fast;
+    background: var(--hover-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+
+    &:hover {
+      background: var(--hover-background);
+      transform: rotate(15deg);
+      color: var(--accent-primary);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .profile-button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-full;
+    background: var(--hover-background);
+    transition: $transition-fast;
+    font-weight: $font-weight-medium;
+
+    &:hover {
+      background: var(--active-background);
+      transform: translateY(-1px);
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: $border-radius-full;
+      object-fit: cover;
+    }
+
+    span {
+      color: var(--text-primary);
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: $tablet) {
+  .navbar {
+    left: 0;
+    padding: 0 $spacing-md;
+
+    &-logo {
+      font-size: $font-size-lg;
+
+      img {
+        height: 28px;
+      }
+    }
+
+    .profile-button {
+      padding: $spacing-xs;
+      
+      span {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .navbar {
+    padding: 0 $spacing-sm;
+  }
+} 

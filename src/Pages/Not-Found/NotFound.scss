@@ -1,0 +1,210 @@
+@use '../../styles/variables' as *;
+
+.not-found-page {
+  min-height: 100vh;
+  background: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.not-found-content {
+  flex: 1;
+  text-align: left;
+  max-width: 500px;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.error-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.error-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.home-button, .back-button {
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+}
+
+.home-button {
+  background: var(--accent-gradient);
+  color: var(--text-primary);
+  border: none;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--neon-glow);
+  }
+}
+
+.back-button {
+  background: transparent;
+  border: 2px solid var(--accent-primary);
+  color: var(--text-primary);
+  
+  &:hover {
+    background: var(--accent-primary-alpha);
+    transform: translateY(-2px);
+  }
+}
+
+.error-illustration {
+  flex: 1;
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.astronaut {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.helmet {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: var(--card-background);
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  top: 20px;
+  left: 50px;
+  box-shadow: var(--neon-glow);
+}
+
+.body {
+  position: absolute;
+  width: 80px;
+  height: 120px;
+  background: var(--card-background);
+  border: 2px solid var(--accent-primary);
+  border-radius: 20px;
+  top: 100px;
+  left: 60px;
+  box-shadow: var(--neon-glow);
+}
+
+.arms {
+  position: absolute;
+  width: 160px;
+  height: 20px;
+  background: var(--card-background);
+  border: 2px solid var(--accent-primary);
+  border-radius: 10px;
+  top: 120px;
+  left: 20px;
+  box-shadow: var(--neon-glow);
+}
+
+.legs {
+  position: absolute;
+  width: 80px;
+  height: 40px;
+  background: var(--card-background);
+  border: 2px solid var(--accent-primary);
+  border-radius: 10px;
+  top: 220px;
+  left: 60px;
+  box-shadow: var(--neon-glow);
+}
+
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(2px 2px at 20px 30px, var(--accent-primary) 50%, rgba(0,0,0,0)),
+                    radial-gradient(2px 2px at 40px 70px, var(--accent-primary) 50%, rgba(0,0,0,0)),
+                    radial-gradient(2px 2px at 50px 160px, var(--accent-primary) 50%, rgba(0,0,0,0)),
+                    radial-gradient(2px 2px at 90px 40px, var(--accent-primary) 50%, rgba(0,0,0,0)),
+                    radial-gradient(2px 2px at 130px 80px, var(--accent-primary) 50%, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.3;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .not-found-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .not-found-content {
+    text-align: center;
+  }
+
+  .error-actions {
+    justify-content: center;
+  }
+
+  .error-illustration {
+    height: 300px;
+  }
+
+  .astronaut {
+    transform: scale(0.8);
+  }
+}

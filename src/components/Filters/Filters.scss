@@ -1,0 +1,114 @@
+@use '../../styles/variables' as *;
+
+.filters-section {
+  background: var(--card-background);
+  border-radius: 12px;
+  padding: $spacing-md;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-color);
+  margin-bottom: $spacing-xl;
+}
+
+.filters-container {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: $spacing-sm;
+  
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+    border-radius: 2px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 2px;
+  }
+}
+
+.filter-item {
+  flex: 0 0 auto;
+  min-width: 200px;
+  
+  select, input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: var(--background-primary);
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: var(--accent-primary);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 2px rgba(var(--accent-primary), 0.2);
+    }
+    
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+  }
+  
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%239900ff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+    
+    option {
+      background: var(--background-primary);
+      color: var(--text-primary);
+    }
+  }
+  
+  input[type="number"] {
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    -moz-appearance: textfield;
+  }
+}
+
+// Responsive styles
+@media (max-width: $tablet) {
+  .filters-section {
+    padding: $spacing-sm;
+    margin-bottom: $spacing-lg;
+  }
+  
+  .filter-item {
+    min-width: 150px;
+    
+    select, input {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .filters-container {
+    gap: $spacing-sm;
+  }
+  
+  .filter-item {
+    min-width: 140px;
+  }
+} 

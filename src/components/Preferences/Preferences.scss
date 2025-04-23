@@ -1,0 +1,188 @@
+@use '../../styles/variables' as *;
+
+.preferences {
+  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  padding: $spacing-lg;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  margin-bottom: $spacing-lg;
+  
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+    
+    h2 {
+      margin: 0;
+      color: var(--text-primary);
+    }
+  }
+  
+  &-actions {
+    display: flex;
+    gap: $spacing-sm;
+    
+    button {
+      padding: $spacing-xs $spacing-md;
+      border-radius: $border-radius-full;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: white;
+      cursor: pointer;
+      transition: $transition-fast;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      &.delete-button {
+        background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+      }
+    }
+  }
+  
+  &-form {
+    .form-group {
+      margin-bottom: $spacing-md;
+      
+      label {
+        display: block;
+        margin-bottom: $spacing-xs;
+        color: var(--text-primary);
+        font-weight: $font-weight-medium;
+      }
+      
+      input, select {
+        width: 100%;
+        padding: $spacing-sm;
+        border-radius: $border-radius-md;
+        border: 1px solid var(--border-color);
+        background-color: var(--background-primary);
+        color: var(--text-primary);
+        
+        &:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.2);
+        }
+      }
+    }
+    
+    .save-button {
+      width: 100%;
+      padding: $spacing-sm;
+      border-radius: $border-radius-md;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+      color: white;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: $transition-fast;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  
+  &-info {
+    .info-group {
+      margin-bottom: $spacing-md;
+      
+      h3 {
+        margin: 0 0 $spacing-xs 0;
+        color: var(--text-primary);
+        font-size: $font-size-base;
+        font-weight: $font-weight-medium;
+      }
+      
+      p {
+        margin: 0;
+        color: var(--text-secondary);
+      }
+    }
+  }
+  
+  &.loading, &.error {
+    padding: $spacing-lg;
+    text-align: center;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  
+  &.error {
+    color: #e74c3c;
+  }
+}
+
+/* Стили для секции выбора темы чата */
+.theme-selection {
+  margin-top: $spacing-md;
+  
+  .theme-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+    margin-top: $spacing-xs;
+  }
+  
+  .theme-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: $border-radius-md;
+    border: 2px solid transparent;
+    transition: $transition-fast;
+    
+    &.selected {
+      border-color: var(--accent-primary);
+      background-color: rgba(var(--accent-primary-rgb), 0.1);
+    }
+    
+    &:hover {
+      background-color: rgba(var(--accent-primary-rgb), 0.05);
+    }
+    
+    .theme-color-preview {
+      width: 60px;
+      height: 40px;
+      border-radius: $border-radius-md;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    span {
+      font-size: $font-size-sm;
+      color: var(--text-primary);
+    }
+  }
+}
+
+.theme-preview {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-xs;
+  
+  .theme-color-preview {
+    width: 60px;
+    height: 30px;
+    border-radius: $border-radius-md;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  span {
+    color: var(--text-secondary);
+    font-size: $font-size-base;
+  }
+} 

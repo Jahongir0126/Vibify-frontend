@@ -1,0 +1,170 @@
+@use '../../styles/variables' as *;
+
+.user-card {
+  background: var(--card-background);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  position: relative;
+  transition: $transition-base;
+  backdrop-filter: var(--card-blur);
+  -webkit-backdrop-filter: var(--card-blur);
+  border: 1px solid var(--border-color);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px var(--shadow-color);
+
+    .user-card-image img {
+      transform: scale(1.05);
+    }
+  }
+
+  &-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: $transition-base;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+      pointer-events: none;
+    }
+  }
+
+  &-content {
+    padding: $spacing-md;
+  }
+
+  &-name {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: var(--text-primary);
+    margin-bottom: $spacing-xs;
+  }
+
+  &-interests {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-xs;
+    margin-top: $spacing-sm;
+
+    .interest-tag {
+      background: var(--hover-background);
+      color: var(--text-primary);
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-full;
+      font-size: $font-size-sm;
+      transition: $transition-fast;
+
+      &:hover {
+        background: var(--active-background);
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md $spacing-md;
+    gap: $spacing-sm;
+
+    .action-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: $spacing-sm;
+      border-radius: $border-radius-full;
+      font-size: $font-size-xl;
+      transition: $transition-fast;
+      background: var(--hover-background);
+      color: var(--text-primary);
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      &.skip {
+        &:hover {
+          background: var(--active-background);
+          color: #ff6b6b;
+        }
+      }
+
+      &.like {
+        &:hover {
+          background: var(--active-background);
+          color: #ff4757;
+        }
+      }
+    }
+  }
+
+  &-details {
+    margin-top: $spacing-sm;
+    font-size: $font-size-sm;
+    color: var(--text-secondary);
+    
+    p {
+      margin-bottom: $spacing-xs;
+    }
+    
+    strong {
+      color: var(--text-primary);
+    }
+  }
+
+  &.chat {
+    &:hover {
+      background: var(--active-background);
+      color: #3498db;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+}
+
+// Responsive styles
+@media (max-width: $tablet) {
+  .user-card {
+    &-image {
+      height: 250px;
+    }
+
+    &-content {
+      padding: $spacing-sm;
+    }
+
+    &-name {
+      font-size: $font-size-lg;
+    }
+
+    &-actions {
+      padding: $spacing-xs $spacing-sm $spacing-sm;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .user-card {
+    &-image {
+      height: 200px;
+    }
+  }
+} 

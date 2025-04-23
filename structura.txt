@@ -1,0 +1,34 @@
+my-app/
+├── public/               # Static assets and HTML entry point
+├── src/                  # Source code
+│   ├── Api/              # API communication with backend
+│   │   └── index.jsx     # Centralized API functions using axios
+│   ├── components/       # Reusable UI components
+│   │   ├── Chats/        # Chat interface components
+│   │   ├── Layout/       # App layout components
+│   │   ├── MessageInput/ # Message input component
+│   │   ├── MessageList/  # Message list display
+│   │   ├── Navbar/       # Navigation bar
+│   │   ├── Profile/      # Profile related components
+│   │   ├── Settings/     # User settings components
+│   │   ├── Sidebar/      # Sidebar navigation
+│   │   └── UserCard/     # User card component for displaying users
+│   ├── contexts/         # React Context for state management
+│   │   └── AuthContext.jsx # Authentication state management
+│   ├── Pages/            # Main application pages
+│   │   ├── Auth/         # Login and Register pages
+│   │   ├── Chats/        # Chat page
+│   │   ├── Home/         # Home/Dashboard page
+│   │   ├── Profile/      # User profile page
+│   │   ├── Search/       # Search functionality page
+│   │   └── Settings/     # User settings page
+│   ├── Private/          # Protected route components
+│   ├── routes/           # Route definitions
+│   │   └── Routes.jsx    # Main routes configuration
+│   ├── styles/           # Global styling
+│   ├── utils/            # Utility functions
+│   ├── App.jsx           # Main App component
+│   └── main.jsx          # Entry point
+├── package.json          # Dependencies and scripts
+└── index.html            # HTML entry point
+

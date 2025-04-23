@@ -1,0 +1,388 @@
+@use '../../styles/variables' as *;
+
+// Основной контейнер в стиле Телеграма
+.telegram-layout {
+  display: flex;
+  width: 100%;
+  height: calc(90vh - 60px); // 60px - высота верхнего навбара, если он есть
+  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  position: relative;
+  
+  @media (max-width: $tablet) {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+// Боковая панель со списком чатов
+.chat-sidebar {
+  width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid var(--accent-primary);
+  background: linear-gradient(160deg, var(--background-secondary) 0%, rgba(var(--accent-primary-rgb), 0.08) 100%);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  
+  @media (max-width: $tablet) {
+    width: 100%;
+    height: 45%;
+    min-height: 250px;
+    border-right: none;
+    border-bottom: 2px solid var(--accent-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: $mobile) {
+    height: 40%;
+    min-height: 200px;
+  }
+}
+
+// Заголовок боковой панели
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  
+  h2 {
+    margin: 0;
+    font-size: $font-size-xl;
+    color: white;
+    font-weight: $font-weight-bold;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Кнопка нового чата
+.new-chat-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: white;
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: $transition-fast;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-right: 10px;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  @media (max-width: $mobile) {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+// Основная панель с чатом
+.chat-main {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-primary);
+  position: relative;
+  z-index: 1;
+  
+  @media (max-width: $tablet) {
+    height: 55%;
+  }
+  
+  @media (max-width: $mobile) {
+    height: 60%;
+  }
+}
+
+// Список чатов
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: $spacing-xs;
+  
+  &-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-secondary);
+    font-size: $font-size-md;
+    padding: $spacing-lg;
+  }
+  
+  /* Стилизация полосы прокрутки */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--accent-primary);
+    border-radius: $border-radius-full;
+  }
+}
+
+// Элемент в списке чатов
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md;
+  margin-bottom: $spacing-xs;
+  border-radius: $border-radius-lg;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: $transition-fast;
+  border: 1px solid transparent;
+  
+  &:hover {
+    background-color: var(--hover-background);
+    transform: translateX(3px);
+    border-color: rgba(var(--accent-primary-rgb), 0.3);
+  }
+  
+  &.active {
+    background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.15) 0%, rgba(var(--accent-primary-rgb), 0.05) 100%);
+    border-left: 4px solid var(--accent-primary);
+    padding-left: calc(#{$spacing-md} - 4px);
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+    border-left: 4px solid var(--accent-primary);
+    
+    .chat-avatar {
+      img {
+        border: 2px solid var(--accent-primary);
+      }
+    }
+    
+    .chat-user {
+      color: var(--accent-primary);
+    }
+  }
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-sm;
+  }
+}
+
+// Аватар чата
+.chat-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  transition: $transition-fast;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: $transition-fast;
+  }
+  
+  @media (max-width: $mobile) {
+    width: 40px;
+    height: 40px;
+    margin-right: $spacing-sm;
+  }
+}
+
+// Информация о чате
+.chat-info {
+  flex: 1;
+  min-width: 0; // Для корректной работы text-overflow в дочерних элементах
+}
+
+// Имя пользователя в чате
+.chat-user {
+  font-weight: $font-weight-bold;
+  font-size: $font-size-md;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+  transition: $transition-fast;
+  
+  @media (max-width: $mobile) {
+    font-size: $font-size-base;
+    margin-bottom: 4px;
+  }
+}
+
+// Превью сообщения
+.chat-preview {
+  font-size: $font-size-sm;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
+  
+  @media (max-width: $mobile) {
+    max-width: 180px;
+    font-size: $font-size-xs;
+  }
+}
+
+// Время последнего сообщения
+.chat-time {
+  font-size: $font-size-xs;
+  color: var(--text-secondary);
+  margin-left: $spacing-sm;
+  align-self: flex-start;
+  min-width: 40px;
+  text-align: right;
+  background-color: rgba(var(--accent-primary-rgb), 0.1);
+  padding: 2px 6px;
+  border-radius: $border-radius-full;
+  
+  @media (max-width: $mobile) {
+    min-width: 35px;
+    font-size: 10px;
+  }
+}
+
+// Пустые состояния
+.no-chats, .empty-chat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: $spacing-xl;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(var(--accent-primary-rgb), 0.05) 0%, rgba(var(--accent-primary-rgb), 0.1) 100%);
+  border-radius: $border-radius-lg;
+  margin: $spacing-md;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.15);
+  
+  p {
+    margin-bottom: $spacing-md;
+    color: var(--text-secondary);
+    font-size: $font-size-base;
+  }
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-md;
+    margin: $spacing-sm;
+  }
+}
+
+// Контент пустого чата
+.empty-chat-content {
+  max-width: 400px;
+  
+  h3 {
+    margin-bottom: $spacing-md;
+    color: var(--accent-primary);
+    font-weight: $font-weight-bold;
+    font-size: $font-size-xl;
+    
+    @media (max-width: $mobile) {
+      font-size: $font-size-lg;
+    }
+  }
+  
+  p {
+    margin-bottom: $spacing-lg;
+    color: var(--text-secondary);
+    
+    @media (max-width: $mobile) {
+      margin-bottom: $spacing-md;
+    }
+  }
+}
+
+// Кнопки
+.search-link, .search-users-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-lg;
+  background-color: var(--accent-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: $border-radius-full;
+  font-weight: $font-weight-bold;
+  transition: $transition-fast;
+  box-shadow: 0 4px 8px rgba(var(--accent-primary-rgb), 0.3);
+  
+  svg {
+    font-size: $font-size-lg;
+  }
+  
+  &:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(var(--accent-primary-rgb), 0.4);
+  }
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-xs $spacing-md;
+    font-size: $font-size-sm;
+  }
+}
+
+// Состояния загрузки и ошибки
+.chat-loading, .chat-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: $spacing-xl;
+  text-align: center;
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-md;
+  }
+}
+
+.chat-error {
+  color: #D32F2F;
+  background-color: rgba(211, 47, 47, 0.1);
+  border-radius: $border-radius-lg;
+  margin: $spacing-md;
+  animation: fadeInOut 5s ease-in-out forwards;
+  
+  @media (max-width: $mobile) {
+    margin: $spacing-sm;
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
