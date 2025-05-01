@@ -380,6 +380,82 @@ const api = {
       return error.response?.data || { message: 'Ошибка удаления лайка' };
     }
   },
+
+  // ###################### Специальности ####################
+  addUserSpecialty: async (userId, specialtyId) => {
+    try {
+      const response = await apiClient.post('/specialties/user', {
+        userId,
+        specialtyId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('API add user specialty error:', error.response?.data);
+      throw error.response?.data || { message: 'Ошибка добавления специальности' };
+    }
+  },
+
+  getUserSpecialty: async (userId) => {
+    try {
+      const response = await apiClient.get(`/specialties/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get user specialty error:', error.response?.data);
+      throw error.response?.data || { message: 'Ошибка получения специальности' };
+    }
+  },
+
+  // ###################### Интересы ####################
+  getAllInterests: async () => {
+    try {
+      const response = await apiClient.get('/interests');
+      return response.data;
+    } catch (error) {
+      console.error('API get all interests error:', error.response?.data);
+      throw error.response?.data || { message: 'Ошибка получения списка интересов' };
+    }
+  },
+
+  addUserInterest: async (userId, interestId) => {
+    try {
+      const response = await apiClient.post('/interests/user', {
+        userId,
+        interestId
+      });
+      return response.data;
+    } catch (error) {
+      console.error('API add user interest error:', error.response?.data);
+      throw error.response?.data || { message: 'Ошибка добавления интереса' };
+    }
+  },
+
+  removeUserInterest: async (userId, interestId) => {
+    try {
+      const response = await apiClient.delete('/interests/user', {
+        data: {
+          userId,
+          interestId
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('API remove user interest error:', error.response?.data);
+      throw error.response?.data || { message: 'Ошибка удаления интереса' };
+    }
+  },
+
+  getUserInterests: async (userId) => {
+    try {
+      const response = await apiClient.get(`/interests/user/${userId}`);
+      // Проверяем, что ответ является массивом
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error('API get user interests error:', error.response?.data);
+      // В случае ошибки возвращаем пустой массив
+      return [];
+    }
+  },
+
 };
 
 export default api;

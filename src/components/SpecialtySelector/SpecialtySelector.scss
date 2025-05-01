@@ -1,0 +1,36 @@
+.specialty-selector {
+  margin-bottom: 1rem;
+
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+
+    &.error {
+      border-color: #ff4444;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+  }
+
+  &__loading,
+  &__error {
+    padding: 0.5rem;
+    color: #666;
+  }
+
+  &__error {
+    color: #ff4444;
+  }
+
+  &__error-text {
+    color: #ff4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+} 

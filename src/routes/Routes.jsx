@@ -7,6 +7,7 @@ import Register from "../Pages/Auth/Register"
 import Home from "../Pages/Home/Home"
 import NotFound from "../Pages/Not-Found/NotFound"
 import Profile from "../Pages/Profile/Profile"
+import CreateProfile from "../Pages/Profile/CreateProfile"
 import Chats from "../Pages/Chats/Chats"
 import Challenges from "../Pages/Challenges/Challenges"
 import Search from "../Pages/Search/Search"
@@ -21,6 +22,7 @@ export default function RoutesWrapper({ isDarkMode, setIsDarkMode }) {
         <Route index element={<Home isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
         <Route path="profile" element={<Profile isDarkMode={isDarkMode} />} />
         <Route path="profile/:userId" element={<Profile isDarkMode={isDarkMode} />} />
+        <Route path="create-profile" element={<CreateProfile isDarkMode={isDarkMode} />} />
         <Route path="chats" element={<Chats isDarkMode={isDarkMode} />} />
         <Route path="chats/:userId" element={<Chats isDarkMode={isDarkMode} />} />
         <Route path="challenges" element={<Challenges isDarkMode={isDarkMode} />} />

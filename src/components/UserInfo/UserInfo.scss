@@ -187,6 +187,40 @@
     }
   }
 
+  &__interests {
+    margin-top: 1.5rem;
+    text-align: center;
+
+    h3 {
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .interests-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .interest-tag {
+      padding: 0.25rem 0.75rem;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: var(--accent-primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+    }
+  }
+
   &.loading {
     display: flex;
     justify-content: center;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../Api/index';
 import { showToast } from '../../utils/toast';
+import InterestSelector from '../InterestSelector/InterestSelector';
 import './UserInfo.scss';
 
 const UserInfo = ({ userId, currentUserId }) => {
@@ -13,7 +14,9 @@ const UserInfo = ({ userId, currentUserId }) => {
     location: '',
     birthdate: '',
     avatarUrl: '',
-    photoUrl: ''
+    photoUrl: '',
+    nickname: '',
+    interests: []
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,11 +26,16 @@ const UserInfo = ({ userId, currentUserId }) => {
     const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        const profileData = await api.getProfileById(userId);
+        const [profileData, userInterests] = await Promise.all([
+          api.getProfileById(userId),
+          api.getUserInterests(userId)
+        ]);
 
         if (profileData && !profileData.message) {
+          const interests = Array.isArray(userInterests) ? userInterests : [];
+          
           setUserData({
-            username: 'Пользователь', // API не возвращает имя пользователя
+            username: 'Пользователь',
             avatar: profileData.avatarUrl || 'https://via.placeholder.com/150',
             photoUrl: profileData.photoUrl,
             bio: profileData.bio || 'Информация отсутствует',
@@ -39,7 +47,8 @@ const UserInfo = ({ userId, currentUserId }) => {
             followersCount: 1,
             followingCount: 4,
             isFollowing: false,
-            nickname:profileData.nickname || 'Не указано',
+            nickname: profileData.nickname || 'Не указано',
+            interests: interests
           });
 
           setFormData({
@@ -49,8 +58,8 @@ const UserInfo = ({ userId, currentUserId }) => {
             birthdate: profileData.birthdate || '',
             photoUrl: profileData.photoUrl || '',
             avatarUrl: profileData.avatarUrl || '',
-            nickname:profileData.nickname || '',
-
+            nickname: profileData.nickname || '',
+            interests: interests.map(interest => interest.id)
           });
         } else {
           if (userId === currentUserId) {
@@ -95,21 +104,55 @@ const UserInfo = ({ userId, currentUserId }) => {
   const handleSaveProfile = async () => {
     setIsLoading(true);
     try {
-      // Форматируем дату рождения в формат YYYY-MM-DD
       const formattedBirthdate = formData.birthdate ? new Date(formData.birthdate).toISOString().split('T')[0] : null;
 
+      // Обновляем основные данные профиля
       const result = await api.updateProfile(userId, {
         bio: formData.bio || '',
         gender: formData.gender || '',
         location: formData.location || '',
         birthdate: formattedBirthdate,
         avatarUrl: formData.avatarUrl,
-        photoUrl: formData.photoUrl,  // Используем текущий аватар как значение по умолчанию
+        photoUrl: formData.photoUrl,
         nickname: formData.nickname,
       });
 
-      // Обновляем данные пользователя независимо от результата,
-      // так как данные могут успешно сохраняться в базе даже при ошибке в ответе
+      // Обновляем интересы пользователя
+      if (formData.interests) {
+        try {
+          // Получаем текущие интересы пользователя
+          const currentInterests = await api.getUserInterests(userId);
+          const currentInterestIds = Array.isArray(currentInterests) 
+            ? currentInterests.map(interest => interest.id)
+            : [];
+
+          // Находим интересы для добавления и удаления
+          const interestsToAdd = formData.interests.filter(id => !currentInterestIds.includes(id));
+          const interestsToRemove = currentInterestIds.filter(id => !formData.interests.includes(id));
+
+          // Добавляем новые интересы
+          for (const interestId of interestsToAdd) {
+            await api.addUserInterest(userId, interestId);
+          }
+
+          // Удаляем старые интересы
+          for (const interestId of interestsToRemove) {
+            await api.removeUserInterest(userId, interestId);
+          }
+
+          // Получаем обновленный список интересов
+          const updatedInterests = await api.getUserInterests(userId);
+          setUserData(prev => ({
+            ...prev,
+            interests: Array.isArray(updatedInterests) ? updatedInterests : []
+          }));
+        } catch (interestsError) {
+          console.error('Ошибка при обновлении интересов:', interestsError);
+          showToast.warning('Некоторые интересы не удалось обновить');
+        }
+      }
+
+      // Обновляем данные в интерфейсе
       setUserData(prev => ({
         ...prev,
         bio: formData.bio || prev.bio,
@@ -118,12 +161,12 @@ const UserInfo = ({ userId, currentUserId }) => {
         birthdate: formData.birthdate ? new Date(formData.birthdate).toLocaleDateString() : prev.birthdate,
         photoUrl: formData.photoUrl || prev.photoUrl,
         avatar: formData.avatarUrl || prev.avatar,
-        nickname: formData.nickname || prev.nickname,
-
+        nickname: formData.nickname || prev.nickname
       }));
+
       setIsEditing(false);
-      setError(null); 
-      showToast.success('Профиль успешно обновлен')
+      setError(null);
+      showToast.success('Профиль успешно обновлен');
 
     } catch (err) {
       console.error('Ошибка при обновлении профиля:', err);
@@ -254,6 +297,13 @@ const UserInfo = ({ userId, currentUserId }) => {
                 placeholder="URL изображения"
               />
             </div>
+            <div className="form-group">
+              <label>Интересы:</label>
+              <InterestSelector
+                value={formData.interests}
+                onChange={(interests) => setFormData(prev => ({ ...prev, interests }))}
+              />
+            </div>
           </div>
         ) : (
           <>
@@ -276,6 +326,19 @@ const UserInfo = ({ userId, currentUserId }) => {
                 </Link>
               </>)}
             </div>
+
+            {userData.interests && userData.interests.length > 0 && (
+              <div className="user-info__interests">
+                <h3>Интересы:</h3>
+                <div className="interests-list">
+                  {userData.interests.map((interest, index) => (
+                    <span key={index} className="interest-tag">
+                      {interest.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         )}
 
