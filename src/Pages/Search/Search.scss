@@ -1,29 +1,61 @@
 @use '../../styles/variables' as *;
 
-.search-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: $spacing-lg;
+.search-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  min-height: calc(100vh - 60px); // Высота минус header
+}
+
+.search-filters {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-results {
+  flex: 1;
+  
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--text-secondary);
+    font-size: 16px;
+  }
+  
+  .no-users-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--text-secondary);
+    text-align: center;
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: $spacing-lg;
+    
+    p {
+      font-size: 16px;
+      max-width: 300px;
+      margin: 0;
+    }
+  }
 }
 
 .users-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: $spacing-lg;
-  margin-top: $spacing-xl;
-  
-  @media (max-width: $desktop) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-md;
   
   @media (max-width: $tablet) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $spacing-md;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
   
   @media (max-width: $mobile) {
     grid-template-columns: 1fr;
-    gap: $spacing-md;
   }
 }
 

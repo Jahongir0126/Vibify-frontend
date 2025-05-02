@@ -138,6 +138,47 @@
     justify-content: center;
     text-decoration: none;
   }
+
+  .user-card-interests {
+    margin-top: 1rem;
+    
+    p {
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .interests-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .interest-tag {
+      background-color: var(--bg-secondary);
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      
+      &:hover {
+        background-color: var(--accent-primary);
+        color: white;
+      }
+    }
+  }
+
+  .user-card-details {
+    p {
+      margin: 0.5rem 0;
+      color: var(--text-primary);
+      
+      strong {
+        color: var(--text-secondary);
+        margin-right: 0.5rem;
+      }
+    }
+  }
 }
 
 // Responsive styles

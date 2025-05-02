@@ -14,20 +14,28 @@ const UserCard = ({ user, onLike, onSkip }) => {
       <div className="user-card-content">
           <h3 className='iser-card-name'>{user.nickname || 'Не указан'}</h3>
         <div className="user-card-details">
-          <p><strong> Био: </strong> {user.bio || 'Не указан'}</p>
+          <p><strong>Био:</strong> {user.bio || 'Не указан'}</p>
           <p><strong>Город:</strong> {user.location || 'Не указан'}</p>
           <p><strong>Пол:</strong> {user.gender === 'male' ? 'Мужской' : user.gender === 'female' ? 'Женский' : 'Другой'}</p>
           {user.birthdate && (
             <p><strong>Дата рождения:</strong> {new Date(user.birthdate).toLocaleDateString()}</p>
           )}
+          {user.specialty && (
+            <p><strong>Специальность:</strong> {user.specialty.name}</p>
+          )}
         </div>
-        <div className="user-card-interests">
-          {user.interests && user.interests.map((interest, index) => (
-            <span key={index} className="interest-tag">
-              {interest}
-            </span>
-          ))}
-        </div>
+        {user.interests && user.interests.length > 0 && (
+          <div className="user-card-interests">
+            <p><strong>Интересы:</strong></p>
+            <div className="interests-tags">
+              {user.interests.map((interestItem, index) => (
+                <span key={index} className="interest-tag">
+                  {interestItem.interest ? interestItem.interest.name : interestItem.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div></Link>
       <div className="user-card-actions">
         <button 

@@ -405,6 +405,33 @@ const api = {
     }
   },
 
+  // Методы для работы со специальностями
+  getAllSpecialties: async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/specialties');
+      if (!response.ok) {
+        throw new Error('Ошибка при загрузке специальностей');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка API:', error);
+      throw error;
+    }
+  },
+
+  getSpecialtyById: async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/specialties/${id}`);
+      if (!response.ok) {
+        throw new Error('Специальность не найдена');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка API:', error);
+      throw error;
+    }
+  },
+
   // ###################### Интересы ####################
   getAllInterests: async () => {
     try {
@@ -447,11 +474,9 @@ const api = {
   getUserInterests: async (userId) => {
     try {
       const response = await apiClient.get(`/interests/user/${userId}`);
-      // Проверяем, что ответ является массивом
       return Array.isArray(response.data) ? response.data : [];
     } catch (error) {
       console.error('API get user interests error:', error.response?.data);
-      // В случае ошибки возвращаем пустой массив
       return [];
     }
   },

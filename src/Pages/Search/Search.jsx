@@ -15,7 +15,8 @@ const Search = () => {
     preferred_gender: '',
     age_min: '',
     age_max: '',
-    location_radius: ''
+    specialty: '',
+    interests: []
   });
 
   useEffect(() => {
@@ -27,7 +28,21 @@ const Search = () => {
       setLoading(true);
       const data = await api.getAllProfiles();
       if (data) {
-        setProfiles(data);
+        // Для каждого профиля получаем его интересы и специальность
+        const profilesWithDetails = await Promise.all(
+          data.map(async (profile) => {
+            const [interests, specialty] = await Promise.all([
+              api.getUserInterests(profile.userId),
+              api.getUserSpecialty(profile.userId).catch(() => null)
+            ]);
+            return {
+              ...profile,
+              interests: Array.isArray(interests) ? interests : [],
+              specialty
+            };
+          })
+        );
+        setProfiles(profilesWithDetails);
       }
     } catch (error) {
       console.error('Ошибка при загрузке профилей:', error);
@@ -50,14 +65,12 @@ const Search = () => {
       return;
     }
     
-    // Предотвращаем лайк самому себе
     if (currentUserId === likedId) {
       showToast.warning('Нельзя поставить лайк самому себе');
       return;
     }
     
     try {
-      // Сначала проверяем, существует ли уже лайк
       const likeExists = await api.checkLike(currentUserId, likedId);
       
       if (likeExists) {
@@ -65,7 +78,6 @@ const Search = () => {
         return;
       }
       
-      // Если лайк не существует, создаем его
       const result = await api.createLike(currentUserId, likedId);
       
       if (result) {
@@ -82,51 +94,72 @@ const Search = () => {
   };
 
   const filteredUsers = profiles.filter(user => {
-    // Исключаем собственный профиль
     if (currentUserId && user.userId === currentUserId) {
       return false;
     }
     
-    // Применяем остальные фильтры
     if (filters.preferred_gender && user.gender !== filters.preferred_gender) {
       return false;
     }
-    if (filters.age_min && user.age < parseInt(filters.age_min)) {
-      return false;
+
+    if (filters.age_min || filters.age_max) {
+      const birthDate = new Date(user.birthdate);
+      const age = new Date().getFullYear() - birthDate.getFullYear();
+      
+      if (filters.age_min && age < parseInt(filters.age_min)) {
+        return false;
+      }
+      if (filters.age_max && age > parseInt(filters.age_max)) {
+        return false;
+      }
     }
-    if (filters.age_max && user.age > parseInt(filters.age_max)) {
-      return false;
-    }
+
     if (filters.location_radius && user.distance > parseInt(filters.location_radius)) {
       return false;
     }
+
+    if (filters.specialty && (!user.specialty || user.specialty.id !== filters.specialty)) {
+      return false;
+    }
+
+    if (filters.interests && filters.interests.length > 0) {
+      const userInterestIds = user.interests.map(interest => 
+        interest.interest ? interest.interest.id : interest.id
+      );
+      return filters.interests.every(id => userInterestIds.includes(id));
+    }
+
     return true;
   });
   
   return (
-    <div className="search-content">
-      <Filters
-        filters={filters}
-        onChange={handleFilterChange}
-      />
-      {loading ? (
-        <div className="loading-indicator">Загрузка профилей...</div>
-      ) : filteredUsers.length === 0 ? (
-        <div className="no-users-found">
-          Не найдено пользователей, соответствующих фильтрам
-        </div>
-      ) : (
-        <div className="users-grid">
-          {filteredUsers.map(user => (
-            <UserCard
-              key={user.userId}
-              user={user}
-              onLike={handleLike}
-              onSkip={handleSkip}
-            />
-          ))}
-        </div>
-      )}
+    <div className="search-page">
+      <div className="search-filters">
+        <Filters
+          filters={filters}
+          onChange={handleFilterChange}
+        />
+      </div>
+      <div className="search-results">
+        {loading ? (
+          <div className="loading-indicator">Загрузка профилей...</div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="no-users-found">
+            <p>Не найдено пользователей, соответствующих фильтрам</p>
+          </div>
+        ) : (
+          <div className="users-grid">
+            {filteredUsers.map(user => (
+              <UserCard
+                key={user.userId}
+                user={user}
+                onLike={handleLike}
+                onSkip={handleSkip}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

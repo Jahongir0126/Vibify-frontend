@@ -16,7 +16,8 @@ const UserInfo = ({ userId, currentUserId }) => {
     avatarUrl: '',
     photoUrl: '',
     nickname: '',
-    interests: []
+    interests: [],
+    specialty: null
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,9 +27,10 @@ const UserInfo = ({ userId, currentUserId }) => {
     const fetchUserData = async () => {
       setIsLoading(true);
       try {
-        const [profileData, userInterests] = await Promise.all([
+        const [profileData, userInterests, userSpecialty] = await Promise.all([
           api.getProfileById(userId),
-          api.getUserInterests(userId)
+          api.getUserInterests(userId),
+          api.getUserSpecialty(userId)
         ]);
 
         if (profileData && !profileData.message) {
@@ -48,7 +50,8 @@ const UserInfo = ({ userId, currentUserId }) => {
             followingCount: 4,
             isFollowing: false,
             nickname: profileData.nickname || 'Не указано',
-            interests: interests
+            interests: interests,
+            specialty: userSpecialty
           });
 
           setFormData({
@@ -59,7 +62,8 @@ const UserInfo = ({ userId, currentUserId }) => {
             photoUrl: profileData.photoUrl || '',
             avatarUrl: profileData.avatarUrl || '',
             nickname: profileData.nickname || '',
-            interests: interests.map(interest => interest.id)
+            interests: interests.map(interest => interest.id),
+            specialty: userSpecialty?.id
           });
         } else {
           if (userId === currentUserId) {
@@ -165,7 +169,7 @@ const UserInfo = ({ userId, currentUserId }) => {
       }));
 
       setIsEditing(false);
-      setError(null);
+      setError(null); 
       showToast.success('Профиль успешно обновлен');
 
     } catch (err) {
@@ -194,7 +198,6 @@ const UserInfo = ({ userId, currentUserId }) => {
   if (!userData) {
     return <div className="user-info error">Пользователь не найден</div>;
   }
-
 
   return (
     <div className="user-info">
@@ -320,6 +323,11 @@ const UserInfo = ({ userId, currentUserId }) => {
               <span className="user-info__join-date">
                 Присоединился: {new Date(userData.joinDate).toLocaleDateString()}
               </span>
+              {userData.specialty && (
+                <span className="user-info__specialty">
+                  Специальность: {userData.specialty.name}
+                </span>
+              )}
               {userId === currentUserId ? (<></>) : (<>
                 <Link to={ `/chats/${userId}`} className='btn btn-primary mt-4 w-100'
                 >Написать
@@ -331,9 +339,9 @@ const UserInfo = ({ userId, currentUserId }) => {
               <div className="user-info__interests">
                 <h3>Интересы:</h3>
                 <div className="interests-list">
-                  {userData.interests.map((interest, index) => (
+                {userData.interests.map((interestItem, index) => (
                     <span key={index} className="interest-tag">
-                      {interest.name}
+                      {interestItem.interest ? interestItem.interest.name : interestItem.name}
                     </span>
                   ))}
                 </div>

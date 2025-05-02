@@ -6,10 +6,10 @@ const Hero = () => {
     <section className="hero">
       <div className="hero-content">
         <h1 className="hero-title">
-          Знакомься нешаблонно: путешествия, философия, квесты
+          Vibify — найди людей с такими же целями
         </h1>
         <h2 className="hero-subtitle">
-          Найди тех, кто разделяет твои странности
+          Вместе — быстрее
         </h2>
         <button className="hero-button">
           Начать челлендж
@@ -19,4 +19,4 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+export default Hero;
