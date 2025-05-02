@@ -8,7 +8,7 @@ const decodeJWT = (token) => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
@@ -46,7 +46,7 @@ const api = {
     try {
       const response = await apiClient.post('/user-service/sign-in', user);
       const decodedToken = decodeJWT(response.data.accessToken);
-      
+
       return {
         data: {
           accessToken: response.data.accessToken,
@@ -65,7 +65,7 @@ const api = {
     try {
       const response = await apiClient.post('/user-service/sign-up', user);
       const decodedToken = decodeJWT(response.data.accessToken);
-      
+
       return {
         data: {
           accessToken: response.data.accessToken,
@@ -95,7 +95,7 @@ const api = {
     try {
       const response = await apiClient.get('/user-service/users');
       return response.data;
-      
+
     } catch (error) {
       console.error('API get users error:', error.response?.data);
       return error.response?.data || { message: 'Ошибка получения пользователей' };
@@ -129,19 +129,19 @@ const api = {
       return { success: true, data: response.data };
     } catch (error) {
       console.error('API send message error:', error);
-      
+
       // Обработка ошибки 409 (Конфликт)
       if (error.response?.status === 409) {
-        return { 
-          success: false, 
-          error: 'Сообщение уже существует или конфликт данных', 
+        return {
+          success: false,
+          error: 'Сообщение уже существует или конфликт данных',
           status: 409,
           details: error.response?.data
         };
       }
-      
-      return { 
-        success: false, 
+
+      return {
+        success: false,
         error: error.response?.data?.message || 'Ошибка отправки сообщения',
         status: error.response?.status,
         details: error.response?.data
@@ -191,7 +191,7 @@ const api = {
 
   // ###################### Профиль ####################
 
-  
+
   getProfile: async (userId) => {
     try {
       const response = await apiClient.get(`/profile/${userId}`);
@@ -296,7 +296,7 @@ const api = {
   },
 
   updatePreferences: async (id, preferencesData) => {
-    
+
     try {
       // Форматируем данные перед отправкой
       const formattedData = {
@@ -529,19 +529,17 @@ const api = {
     }
   },
 
-  joinCommunity: async (userId,communityId) => {
+  joinCommunity: async (userId, communityId) => {
     try {
       const response = await apiClient.post(`/community/${communityId}/join`, { userId });
-      console.log(response);
       return response.data;
-
     } catch (error) {
       console.error('API join community error:', error.response?.data);
       return error.response?.data || { message: 'Ошибка при присоединении к сообществу' };
     }
   },
 
-  leaveCommunity: async (userId,communityId) => {
+  leaveCommunity: async (userId, communityId) => {
     try {
       const response = await apiClient.post(`/community/${communityId}/leave`, { userId });
       return response.data;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import  UserCard  from '../../components/UserCard/UserCard';
 import './CommunityDetails.scss';
 import api from '../../Api';
+import { getUserIdFromToken } from '../../utils/auth';
+import {showToast} from '../../utils/toast'
 
 const CommunityDetails = () => {
   const { id } = useParams();
@@ -14,11 +15,9 @@ const CommunityDetails = () => {
   useEffect(() => {
     const fetchCommunityDetails = async () => {
       try {
-        // Загрузка данных сообщества
         const communityData = await api.getCommunityById(id);
         setCommunity(communityData);
 
-        // Загрузка участников сообщества
         const membersData = await api.getCommunityUsers(id);
         setMembers(membersData);
       } catch (error) {
@@ -31,8 +30,14 @@ const CommunityDetails = () => {
     fetchCommunityDetails();
   }, [id]);
 
-  const handleMemberClick = (userId) => {
-    navigate(`/chats/${userId}`);
+  const handleChatClick = (userId) => {
+    const currentUserId=getUserIdFromToken();
+    if(currentUserId==userId){
+      showToast.info("Вы не можете написать самому себе!")
+    }else{
+
+      navigate(`/chats/${userId}`);
+    }
   };
 
   if (loading) {
@@ -50,13 +55,23 @@ const CommunityDetails = () => {
           
           <div className="community-members">
             <h2>Участники сообщества</h2>
-            <div className="members-grid">
+            <div className="members-list">
               {members.map((member) => (
-                <div key={member.userId} onClick={() => handleMemberClick(member.userId)}>
-                  <UserCard
-                    user={member}
-                    className="member-card"
-                  />
+                <div key={member.userId} className="member-item">
+                  <div className="member-avatar">
+                    <img src={member.avatarUrl || member.photoUrl || "https://via.placeholder.com/50"} alt={member.nickname} />
+                  </div>
+                  <div className="member-info">
+                    <h3>{member.nickname}</h3>
+                    <p className="member-bio">{member.bio || 'Нет информации о себе'}</p>
+                   
+                  </div>
+                  <button 
+                    className="chat-button"
+                    onClick={() => handleChatClick(member.userId)}
+                  >
+                    Написать
+                  </button>
                 </div>
               ))}
             </div>

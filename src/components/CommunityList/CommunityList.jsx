@@ -74,7 +74,7 @@ const CommunityList = ({ isDarkMode }) => {
           </Link>
         </div>
       ) : (
-        <div className="communities-grid">
+        <div className="communities-grid ">
           {communities.map(community => (
             <div key={community.id} className="community-card">
               <div className="community-info">
