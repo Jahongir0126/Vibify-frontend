@@ -89,6 +89,12 @@ const CommunityList = ({ isDarkMode }) => {
               </div>
               <div className="community-actions">
                 <Link 
+                  to={`/community/${community.id}/chat`} 
+                  className="join-community-btn"
+                >
+                  Чат 
+                </Link>
+                <Link 
                   to={`/communities/${community.id}`} 
                   className="view-community-btn"
                 >

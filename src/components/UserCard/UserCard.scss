@@ -49,6 +49,7 @@
 
   &-content {
     padding: $spacing-md;
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
     gap: $spacing-sm;
@@ -58,24 +59,22 @@
     font-size: 1.1rem;
     font-weight: $font-weight-bold;
     color: var(--text-primary);
-    margin-bottom: 0.25rem;
   }
 
   &-interests {
     display: flex;
     flex-wrap: wrap;
     gap: $spacing-xs;
-    margin-top: 0.5rem;
+    // margin-top: 0.5rem;
 
     .interest-tag {
       background: var(--hover-background);
       color: var(--text-secondary);
       padding: 0.15rem 0.5rem;
-      border-radius: $border-radius-sm;
+      border-radius: $border-radius-lg;
       font-size: 0.75rem;
       transition: $transition-fast;
       border: 1px solid var(--border-color);
-
       &:hover {
         background: var(--active-background);
         transform: translateY(-1px);

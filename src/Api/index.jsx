@@ -1,5 +1,6 @@
 import axios from "axios";
 import { data } from "react-router-dom";
+import { showToast } from "../utils/toast";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -124,29 +125,8 @@ const api = {
 
   // ###################### Сообщения ####################
   sendMessage: async (messageData) => {
-    try {
       const response = await apiClient.post('/message', messageData);
-      return { success: true, data: response.data };
-    } catch (error) {
-      console.error('API send message error:', error);
-
-      // Обработка ошибки 409 (Конфликт)
-      if (error.response?.status === 409) {
-        return {
-          success: false,
-          error: 'Сообщение уже существует или конфликт данных',
-          status: 409,
-          details: error.response?.data
-        };
-      }
-
-      return {
-        success: false,
-        error: error.response?.data?.message || 'Ошибка отправки сообщения',
-        status: error.response?.status,
-        details: error.response?.data
-      };
-    }
+      return response;
   },
 
   getAllMessages: async () => {

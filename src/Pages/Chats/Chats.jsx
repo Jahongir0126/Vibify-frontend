@@ -28,6 +28,10 @@ const ChatsPage = ({ isDarkMode }) => {
         return;
       }
 
+      // Получаем список всех сообществ для фильтрации
+      const communities = await api.getAllCommunities();
+      const communityIds = new Set(communities.map(c => c.id));
+
       // Получаем все сообщения пользователя
       const messages = await api.getAllMessages();
 
@@ -35,10 +39,15 @@ const ChatsPage = ({ isDarkMode }) => {
         throw new Error('Некорректный ответ от сервера');
       }
 
-      // Собираем уникальных пользователей из сообщений
+      // Собираем уникальных пользователей из сообщений, исключая сообщества
       const chatUsers = new Map();
       
       messages.forEach(msg => {
+        // Пропускаем сообщения сообществ
+        if (communityIds.has(msg.senderId) || communityIds.has(msg.receiverId)) {
+          return;
+        }
+
         if (msg.senderId === currentUserId) {
           // Текущий пользователь отправил сообщение
           if (!chatUsers.has(msg.receiverId)) {
@@ -48,7 +57,6 @@ const ChatsPage = ({ isDarkMode }) => {
               timestamp: msg.createdAt || new Date().toISOString()
             });
           } else if (new Date(msg.createdAt) > new Date(chatUsers.get(msg.receiverId).timestamp)) {
-            // Обновляем последнее сообщение, если оно новее
             chatUsers.set(msg.receiverId, {
               ...chatUsers.get(msg.receiverId),
               lastMessage: msg.content,
@@ -64,7 +72,6 @@ const ChatsPage = ({ isDarkMode }) => {
               timestamp: msg.createdAt || new Date().toISOString()
             });
           } else if (new Date(msg.createdAt) > new Date(chatUsers.get(msg.senderId).timestamp)) {
-            // Обновляем последнее сообщение, если оно новее
             chatUsers.set(msg.senderId, {
               ...chatUsers.get(msg.senderId),
               lastMessage: msg.content,

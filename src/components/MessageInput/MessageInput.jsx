@@ -42,7 +42,7 @@ const EmojiPicker = ({ onEmojiSelect, onClose, isDarkMode, emojiPacks }) => {
   );
 };
 
-const MessageInput = ({ onMessageSent, disabled, isDarkMode }) => {
+const MessageInput = ({ onMessageSent, disabled, isDarkMode, placeholder = 'Напишите сообщение...' }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -154,7 +154,7 @@ const MessageInput = ({ onMessageSent, disabled, isDarkMode }) => {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Напишите сообщение..."
+          placeholder={placeholder}
           disabled={disabled}
         />
         
@@ -170,4 +170,4 @@ const MessageInput = ({ onMessageSent, disabled, isDarkMode }) => {
   );
 };
 
-export default MessageInput; 
+export default MessageInput;

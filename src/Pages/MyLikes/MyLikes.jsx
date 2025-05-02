@@ -77,22 +77,18 @@ const MyLikes = ({ isDarkMode }) => {
                       <small className="text-muted d-block mb-3">
                         {new Date(like.createdAt).toLocaleDateString()}
                       </small>
-                      <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex  flex-wrap align-items-center ">
                         <Button 
-                          // variant="outline-primary"
-                          size="sm"
                           onClick={() => handleProfileClick(like.likedId)}
                           className="view-profile-btn"
                         >
-                          Просмотреть профиль
+                          Просмотреть
                         </Button>
                         <Button 
-                          // variant="outline-danger" 
-                          size="sm"
                           onClick={() => handleUnlike(like.id)}
                           className="unlike-btn"
                         >
-                          Убрать лайк
+                          Убрать
                         </Button>
                       </div>
                     </div>

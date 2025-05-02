@@ -38,7 +38,7 @@ const UserInfo = ({ userId, currentUserId }) => {
           
           setUserData({
             username: 'Пользователь',
-            avatar: profileData.avatarUrl || 'https://via.placeholder.com/150',
+            avatar: profileData.avatarUrl || 'https://mir-s3-cdn-cf.behance.net/project_modules/fs/5e227329363657.55ef8df90a1ca.png',
             photoUrl: profileData.photoUrl,
             bio: profileData.bio || 'Информация отсутствует',
             location: profileData.location || 'Не указано',

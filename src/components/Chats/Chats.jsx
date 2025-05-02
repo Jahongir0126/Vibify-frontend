@@ -6,7 +6,7 @@ import { showToast } from '../../utils/toast';
 import api from '../../Api';
 import './Chats.scss';
 
-const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode }) => {
+const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode, isCommunityChat }) => {
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,8 +40,8 @@ const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode }) => 
         return;
       }
       
-      // Получаем сообщения для выбранного пользователя
-      const data = await api.getUserMessages(selectedUserId);
+      // В зависимости от типа чата используем разные методы API
+      const data =  await api.getUserMessages(selectedUserId);
       
       if (!Array.isArray(data)) {
         throw new Error('Некорректный ответ от сервера');
@@ -49,12 +49,16 @@ const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode }) => 
       
       // Преобразование данных в формат, ожидаемый компонентом
       const formattedMessages = data
-        .filter(msg => 
-          // Фильтруем сообщения: только те, которые отправлены текущим пользователем
-          // или получены от выбранного пользователя
-          (msg.senderId === currentUserId && msg.receiverId === selectedUserId) ||
-          (msg.senderId === selectedUserId && msg.receiverId === currentUserId)
-        )
+        .filter(msg => {
+          if (isCommunityChat) {
+            // Для чата сообщества показываем все сообщения
+            return true;
+          } else {
+            // Для личного чата фильтруем сообщения между двумя пользователями
+            return (msg.senderId === currentUserId && msg.receiverId === selectedUserId) ||
+                   (msg.senderId === selectedUserId && msg.receiverId === currentUserId);
+          }
+        })
         .map(msg => ({
           id: msg.messageId,
           senderId: msg.senderId,
@@ -138,7 +142,7 @@ const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode }) => 
       // Отправляем сообщение через API
       const response = await api.sendMessage(messageData);
       
-      if (!response.success) {
+      if (!response.status==204) {
         throw new Error(response.error || 'Ошибка при отправке сообщения');
       }
       
@@ -242,7 +246,7 @@ const Chats = ({ currentUserId, selectedUserId, onChatUpdated, isDarkMode }) => 
           {userProfile ? (
             <div className="chat-user-info">
               <img 
-                src={userProfile.avatarUrl || userProfile.photoUrl || "https://via.placeholder.com/30"} 
+                src={userProfile.avatarUrl || userProfile.photoUrl || "https://mir-s3-cdn-cf.behance.net/project_modules/fs/5e227329363657.55ef8df90a1ca.png"} 
                 alt="User avatar"
                 className="chat-user-avatar" 
               />
