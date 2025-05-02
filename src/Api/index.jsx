@@ -408,11 +408,8 @@ const api = {
   // Методы для работы со специальностями
   getAllSpecialties: async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/specialties');
-      if (!response.ok) {
-        throw new Error('Ошибка при загрузке специальностей');
-      }
-      return await response.json();
+      const response = await apiClient.get('/specialties');
+      return await response.data
     } catch (error) {
       console.error('Ошибка API:', error);
       throw error;
@@ -421,7 +418,7 @@ const api = {
 
   getSpecialtyById: async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/specialties/${id}`);
+      const response = await apiClient.get(`/specialties/${id}`);
       if (!response.ok) {
         throw new Error('Специальность не найдена');
       }
@@ -480,6 +477,120 @@ const api = {
       return [];
     }
   },
+
+  // ###################### Сообщества ####################
+  getAllCommunities: async () => {
+    try {
+      const response = await apiClient.get('/community');
+      return response.data;
+    } catch (error) {
+      console.error('API get communities error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения сообществ' };
+    }
+  },
+
+  getCommunityById: async (id) => {
+    try {
+      const response = await apiClient.get(`/community/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения сообщества' };
+    }
+  },
+
+  createCommunity: async (communityData) => {
+    try {
+      const response = await apiClient.post('/community', communityData);
+      return response.data;
+    } catch (error) {
+      console.error('API create community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка создания сообщества' };
+    }
+  },
+
+  updateCommunity: async (id, communityData) => {
+    try {
+      const response = await apiClient.patch(`/community/${id}`, communityData);
+      return response.data;
+    } catch (error) {
+      console.error('API update community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка обновления сообщества' };
+    }
+  },
+
+  deleteCommunity: async (id) => {
+    try {
+      const response = await apiClient.delete(`/community/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('API delete community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка удаления сообщества' };
+    }
+  },
+
+  joinCommunity: async (userId,communityId) => {
+    try {
+      const response = await apiClient.post(`/community/${communityId}/join`, { userId });
+      console.log(response);
+      return response.data;
+
+    } catch (error) {
+      console.error('API join community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка при присоединении к сообществу' };
+    }
+  },
+
+  leaveCommunity: async (userId,communityId) => {
+    try {
+      const response = await apiClient.post(`/community/${communityId}/leave`, { userId });
+      return response.data;
+    } catch (error) {
+      console.error('API leave community error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка при выходе из сообщества' };
+    }
+  },
+
+  getUserCommunities: async (userId) => {
+    try {
+      const response = await apiClient.get(`/community/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API get user communities error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения сообществ пользователя' };
+    }
+  },
+
+  getCommunityUsers: async (communityId) => {
+    try {
+      const response = await apiClient.get(`/community/${communityId}/users`);
+      return response.data;
+    } catch (error) {
+      console.error('API get community users error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка получения пользователей сообщества' };
+    }
+  },
+
+  searchCommunitiesByInterests: async (interestIds) => {
+    try {
+      const response = await apiClient.post('/community/search/by-interests', { interestIds });
+      return response.data;
+    } catch (error) {
+      console.error('API search communities by interests error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка поиска сообществ по интересам' };
+    }
+  },
+
+  searchCommunitiesBySpecialty: async (specialtyId) => {
+    try {
+      const response = await apiClient.get(`/community/specialty/${specialtyId}`);
+      return response.data;
+    } catch (error) {
+      console.error('API search communities by specialty error:', error.response?.data);
+      return error.response?.data || { message: 'Ошибка поиска сообществ по специальности' };
+    }
+  },
+
 
 };
 

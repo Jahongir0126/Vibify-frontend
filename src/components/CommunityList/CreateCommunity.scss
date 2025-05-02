@@ -1,0 +1,198 @@
+@use '../../styles/variables' as *;
+
+.create-community {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  background: var(--background-primary);
+  border-radius: $border-radius-lg;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  &.dark {
+    --form-bg: rgba(255, 255, 255, 0.05);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-focus: var(--accent-primary);
+  }
+
+  &.light {
+    --form-bg: white;
+    --input-border: rgba(0, 0, 0, 0.1);
+    --input-focus: var(--accent-primary);
+  }
+
+  h2 {
+    color: var(--text-primary);
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-2xl;
+    text-align: center;
+  }
+
+  .error-message {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+    padding: $spacing-md;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-lg;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+      color: var(--text-primary);
+      font-weight: $font-weight-medium;
+      margin-bottom: $spacing-xs;
+    }
+
+    input, 
+    textarea, 
+    select {
+      padding: $spacing-sm;
+      border: 1px solid var(--input-border);
+      border-radius: $border-radius-md;
+      background: var(--form-bg);
+      color: var(--text-primary);
+      font-size: $font-size-base;
+      transition: $transition-fast;
+
+      &:focus {
+        outline: none;
+        border-color: var(--input-focus);
+        box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.2);
+      }
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+  }
+
+  .specialty-select {
+    position: relative;
+    
+    svg {
+      position: absolute;
+      left: $spacing-sm;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-primary);
+    }
+
+    select {
+      width: 100%;
+      padding-left: $spacing-xl;
+      appearance: none;
+      cursor: pointer;
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+  }
+
+  .interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: $spacing-sm;
+    margin-top: $spacing-xs;
+
+    .interest-tag {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      padding: $spacing-sm;
+      border: 1px solid var(--input-border);
+      border-radius: $border-radius-md;
+      background: var(--form-bg);
+      color: var(--text-primary);
+      font-size: $font-size-sm;
+      cursor: pointer;
+      transition: $transition-fast;
+
+      svg {
+        color: var(--accent-primary);
+      }
+
+      &:hover {
+        background: rgba(var(--accent-primary-rgb), 0.1);
+        border-color: var(--accent-primary);
+      }
+
+      &.selected {
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
+        color: white;
+
+        svg {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+
+    button {
+      flex: 1;
+      padding: $spacing-md;
+      border: none;
+      border-radius: $border-radius-md;
+      font-weight: $font-weight-medium;
+      cursor: pointer;
+      transition: $transition-fast;
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+
+    .cancel-btn {
+      background: var(--background-secondary);
+      color: var(--text-primary);
+
+      &:hover {
+        background: var(--background-hover);
+      }
+    }
+
+    .submit-btn {
+      background: var(--accent-primary);
+      color: white;
+
+      &:hover:not(:disabled) {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  @media (max-width: $mobile) {
+    padding: $spacing-md;
+
+    h2 {
+      font-size: $font-size-xl;
+    }
+
+    .interests-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+}

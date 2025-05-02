@@ -2,17 +2,20 @@
 
 .user-card {
   background: var(--card-background);
-  border-radius: $border-radius-lg;
+  border-radius: $border-radius-md;
   overflow: hidden;
   position: relative;
   transition: $transition-base;
   backdrop-filter: var(--card-blur);
   -webkit-backdrop-filter: var(--card-blur);
   border: 1px solid var(--border-color);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--shadow-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
 
     .user-card-image img {
       transform: scale(1.05);
@@ -21,7 +24,7 @@
 
   &-image {
     width: 100%;
-    height: 300px;
+    height: 200px;
     overflow: hidden;
     position: relative;
 
@@ -38,7 +41,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 50%;
+      height: 40%;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
       pointer-events: none;
     }
@@ -46,32 +49,38 @@
 
   &-content {
     padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
   }
 
   &-name {
-    font-size: $font-size-xl;
+    font-size: 1.1rem;
     font-weight: $font-weight-bold;
     color: var(--text-primary);
-    margin-bottom: $spacing-xs;
+    margin-bottom: 0.25rem;
   }
 
   &-interests {
     display: flex;
     flex-wrap: wrap;
     gap: $spacing-xs;
-    margin-top: $spacing-sm;
+    margin-top: 0.5rem;
 
     .interest-tag {
       background: var(--hover-background);
-      color: var(--text-primary);
-      padding: $spacing-xs $spacing-sm;
-      border-radius: $border-radius-full;
-      font-size: $font-size-sm;
+      color: var(--text-secondary);
+      padding: 0.15rem 0.5rem;
+      border-radius: $border-radius-sm;
+      font-size: 0.75rem;
       transition: $transition-fast;
+      border: 1px solid var(--border-color);
 
       &:hover {
         background: var(--active-background);
         transform: translateY(-1px);
+        color: var(--text-primary);
+        border-color: var(--accent-primary);
       }
     }
   }
@@ -79,35 +88,47 @@
   &-actions {
     display: flex;
     justify-content: space-between;
-    padding: $spacing-sm $spacing-md $spacing-md;
+    padding: $spacing-sm $spacing-md;
     gap: $spacing-sm;
+    border-top: 1px solid var(--border-color);
+    background: var(--background-secondary);
 
     .action-button {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: $spacing-sm;
+      padding: $spacing-xs $spacing-sm;
       border-radius: $border-radius-full;
-      font-size: $font-size-xl;
+      font-size: 0.9rem;
       transition: $transition-fast;
       background: var(--hover-background);
       color: var(--text-primary);
+      border: none;
+      cursor: pointer;
 
       &:hover {
-        transform: translateY(-2px);
+        background: var(--active-background);
+        transform: translateY(-1px);
       }
 
       &.skip {
         &:hover {
-          background: var(--active-background);
+          background: rgba(255, 107, 107, 0.1);
           color: #ff6b6b;
+        }
+      }
+
+      &.chat {
+        &:hover {
+          background: rgba(52, 152, 219, 0.1);
+          color: #3498db;
         }
       }
 
       &.like {
         &:hover {
-          background: var(--active-background);
+          background: rgba(255, 71, 87, 0.1);
           color: #ff4757;
         }
       }
@@ -115,97 +136,60 @@
   }
 
   &-details {
-    margin-top: $spacing-sm;
-    font-size: $font-size-sm;
-    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
     
     p {
-      margin-bottom: $spacing-xs;
-    }
-    
-    strong {
+      margin: 0.25rem 0;
       color: var(--text-primary);
-    }
-  }
-
-  &.chat {
-    &:hover {
-      background: var(--active-background);
-      color: #3498db;
-    }
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-  }
-
-  .user-card-interests {
-    margin-top: 1rem;
-    
-    p {
-      margin-bottom: 0.5rem;
-      color: var(--text-primary);
-    }
-
-    .interests-tags {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: auto 1fr;
       gap: 0.5rem;
-    }
-
-    .interest-tag {
-      background-color: var(--bg-secondary);
-      padding: 4px 12px;
-      border-radius: 16px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-      
-      &:hover {
-        background-color: var(--accent-primary);
-        color: white;
-      }
-    }
-  }
-
-  .user-card-details {
-    p {
-      margin: 0.5rem 0;
-      color: var(--text-primary);
+      align-items: baseline;
       
       strong {
         color: var(--text-secondary);
-        margin-right: 0.5rem;
+        font-weight: 500;
+        white-space: nowrap;
       }
     }
   }
-}
 
-// Responsive styles
-@media (max-width: $tablet) {
-  .user-card {
+  // Responsive styles
+  @media (max-width: $tablet) {
     &-image {
-      height: 250px;
+      height: 180px;
     }
 
     &-content {
       padding: $spacing-sm;
     }
 
+    &-actions {
+      padding: $spacing-xs $spacing-sm;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    &-image {
+      height: 160px;
+    }
+
     &-name {
-      font-size: $font-size-lg;
+      font-size: 1rem;
+    }
+
+    &-details {
+      font-size: 0.8rem;
     }
 
     &-actions {
-      padding: $spacing-xs $spacing-sm $spacing-sm;
+      padding: $spacing-xs;
+      gap: $spacing-xs;
+      
+      .action-button {
+        padding: $spacing-xs;
+      }
     }
   }
 }
-
-@media (max-width: $mobile) {
-  .user-card {
-    &-image {
-      height: 200px;
-    }
-  }
-} 

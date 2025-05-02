@@ -11,14 +11,15 @@ import {
   faHome,
   faThumbtack,
   faBars,
-  faCog
+  faCog,
+  faUsers
 } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.scss';
 
 const menuItems = [
   { icon: faHome, label: 'Home', path: '/' },
-  // { icon: faUser, label: 'Профиль', path: '/profile' }, те
   { icon: faComments, label: 'Чаты', path: '/chats' },
+  { icon: faUsers, label: 'Сообщества', path: '/communities' },
   { icon: faSearch, label: 'Поиск', path: '/search' },
   { icon: faTrophy, label: 'Челленджи', path: '/challenges' },
   { icon: faBell, label: 'Уведомления', path: '/notifications' },
@@ -82,4 +83,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

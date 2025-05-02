@@ -14,6 +14,9 @@ import Search from "../Pages/Search/Search"
 import Settings from "../Pages/Settings/Settings"
 import Notifications from "../Pages/Notifications/Notifications"
 import MyLikes from "../Pages/MyLikes/MyLikes"
+import CreateCommunity from '../components/CommunityList/CreateCommunity'
+import Communities from '../Pages/Communities/Communities'
+import CommunityDetails from '../Pages/Communities/CommunityDetails'
 
 export default function RoutesWrapper({ isDarkMode, setIsDarkMode }) {
   return (
@@ -30,6 +33,9 @@ export default function RoutesWrapper({ isDarkMode, setIsDarkMode }) {
         <Route path="settings" element={<Settings isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
         <Route path="notifications" element={<Notifications isDarkMode={isDarkMode} />} />
         <Route path="favorites" element={<MyLikes isDarkMode={isDarkMode} />} />
+        <Route path="communities" element={<Communities isDarkMode={isDarkMode} />} />
+        <Route path="communities/:id" element={<CommunityDetails isDarkMode={isDarkMode} />} />
+        <Route path="communities/create" element={<CreateCommunity isDarkMode={isDarkMode} />} />
       </Route>
       <Route path="/login" element={<Login isDarkMode={isDarkMode} />} />
       <Route path="/register" element={<Register isDarkMode={isDarkMode} />} />

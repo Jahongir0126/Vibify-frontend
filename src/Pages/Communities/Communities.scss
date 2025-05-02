@@ -1,0 +1,45 @@
+@use '../../styles/variables' as *;
+
+.communities-page {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
+
+  h1 {
+    margin-bottom: $spacing-xl;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    text-align: center;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 2px;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    padding: $spacing-md;
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: $spacing-lg;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    padding: $spacing-sm;
+    
+    h1 {
+      font-size: 1.75rem;
+    }
+  }
+}
