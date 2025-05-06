@@ -1,373 +1,194 @@
+@use '../../styles/variables' as *;
+
 .challenge-card {
-  margin-bottom: 2rem;
-  border: none;
-  border-radius: 24px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
+  background: var(--card-background);
+  border-radius: $border-radius-lg;
   overflow: hidden;
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  position: relative;
+  transition: all 0.3s ease;
+  height: 100%;
+  border: 1px solid var(--border-color);
   
-  &.dark {
-    background: rgba(44, 62, 80, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    
-    .card-title {
-      color: #ecf0f1;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    
-    .card-text {
-      color: rgba(255, 255, 255, 0.8);
-    }
-    
-    .reward-text {
-      color: rgba(255, 255, 255, 0.7);
-    }
-  }
-  
-  &.light {
-    background: linear-gradient(135deg, #ffffff, #f5f7fa);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    
-    .card-title {
-      color: #34495e;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-    
-    .card-text {
-      color: #7f8c8d;
-    }
+  @media (max-width: $mobile) {
+    margin: 0 $spacing-xs;
   }
   
   &:hover {
-    transform: translateY(-15px) rotateX(5deg);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+  }
+
+  .challenge-header {
+    padding: $spacing-md;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
     
-    .challenge-header {
-      .challenge-icon {
-        transform: scale(1.2) rotate(10deg);
+    @media (max-width: $mobile) {
+      padding: $spacing-sm;
+    }
+    
+    .challenge-icon {
+      font-size: 24px;
+      color: var(--accent-primary);
+      
+      @media (max-width: $mobile) {
+        font-size: 20px;
+      }
+    }
+    
+    .difficulty-badge {
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-full;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+      
+      @media (max-width: $mobile) {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+    }
+  }
+
+  .card-body {
+    padding: $spacing-md;
+    
+    @media (max-width: $mobile) {
+      padding: $spacing-sm;
+    }
+    
+    .card-title {
+      margin: 0 0 $spacing-sm;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      
+      @media (max-width: $mobile) {
+        font-size: 16px;
+      }
+    }
+    
+    .card-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin: 0 0 $spacing-md;
+      
+      @media (max-width: $mobile) {
+        font-size: 13px;
+        margin-bottom: $spacing-sm;
+      }
+    }
+  }
+
+  .progress-section {
+    margin-bottom: $spacing-md;
+    
+    @media (max-width: $mobile) {
+      margin-bottom: $spacing-sm;
+    }
+    
+    .progress {
+      height: 8px;
+      background: var(--background-secondary);
+      border-radius: $border-radius-full;
+      overflow: hidden;
+      
+      @media (max-width: $mobile) {
+        height: 6px;
       }
     }
     
     .progress-bar {
-      background-position: right center;
+      height: 100%;
+      background: var(--accent-primary);
+      border-radius: $border-radius-full;
+      transition: width 0.3s ease;
     }
   }
-  
-  .card-body {
-    padding: 1.8rem;
-  }
-  
-  .card-title {
-    font-weight: 700;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    letter-spacing: 0.5px;
-  }
-  
-  .card-text {
-    line-height: 1.6;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .progress-section {
-    margin: 1.5rem 0;
-    
-    .progress {
-      height: 1rem;
-      border-radius: 30px;
-      background-color: rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      padding: 3px;
-      
-      &.dark-progress {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 3px;
-      }
-      
-      .progress-bar {
-        border-radius: 30px;
-        background-size: 200% auto;
-        transition: all 0.3s ease;
-      }
-    }
-    
-    .daily-progress .progress-bar {
-      background-image: linear-gradient(45deg, #e74c3c, #f39c12, #e74c3c);
-      background-size: 200% auto;
-      animation: gradientShift 3s infinite;
-    }
-    
-    .weekly-progress .progress-bar {
-      background-image: linear-gradient(45deg, #3498db, #2980b9, #3498db);
-      background-size: 200% auto;
-      animation: gradientShift 3s infinite;
-    }
-    
-    .monthly-progress .progress-bar {
-      background-image: linear-gradient(45deg, #9b59b6, #8e44ad, #9b59b6);
-      background-size: 200% auto;
-      animation: gradientShift 3s infinite;
-    }
-    
-    .premium-progress .progress-bar {
-      background-image: linear-gradient(45deg, #f1c40f, #f39c12, #f1c40f);
-      background-size: 200% auto;
-      animation: gradientShift 3s infinite;
-    }
-  }
-  
+
   .reward-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1.5rem;
     
     .reward-text {
-      font-size: 1rem;
-      margin-bottom: 0;
-      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin: 0;
+      
+      @media (max-width: $mobile) {
+        font-size: 12px;
+      }
     }
     
     .reward-button {
-      font-size: 0.9rem;
-      border-radius: 30px;
-      padding: 0.6rem 1.5rem;
+      padding: $spacing-xs $spacing-md;
+      border-radius: $border-radius-full;
+      background: var(--accent-primary);
+      color: white;
       border: none;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
       
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      @media (max-width: $mobile) {
+        padding: 6px 12px;
+        font-size: 12px;
       }
       
-      &:active {
-        transform: translateY(1px);
+      &:hover {
+        background: var(--accent-secondary);
+        transform: translateY(-2px);
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
       }
     }
   }
-  
-  .challenge-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 1.8rem;
-    position: relative;
-    overflow: hidden;
+
+  &.locked {
+    opacity: 0.7;
     
-    &::before {
-      content: '';
+    .challenge-locked {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to right, 
-        rgba(52, 152, 219, 0.2), 
-        rgba(155, 89, 182, 0.2));
-      z-index: 1;
-    }
-    
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 200%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0) 100%);
-      animation: shimmer 3s infinite;
-      z-index: 2;
-    }
-    
-    .challenge-icon {
-      font-size: 2rem;
-      position: relative;
-      z-index: 3;
-      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
-      
-      &.daily {
-        color: #e74c3c;
-      }
-      
-      &.weekly {
-        color: #3498db;
-      }
-      
-      &.monthly {
-        color: #9b59b6;
-      }
-      
-      &.premium {
-        color: #f1c40f;
-        animation: premiumPulse 2s infinite;
-      }
-    }
-  }
-  
-  .difficulty-badge {
-    border-radius: 30px;
-    padding: 0.5rem 1.2rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 3;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    
-    &.easy {
-      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       color: white;
-    }
-    
-    &.medium {
-      background: linear-gradient(135deg, #f39c12, #e67e22);
-      color: white;
-    }
-    
-    &.hard {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
-      color: white;
-    }
-    
-    &.premium {
-      background: linear-gradient(135deg, #f1c40f, #e67e22);
-      color: white;
-      position: relative;
-      overflow: hidden;
+      gap: $spacing-sm;
+      backdrop-filter: blur(2px);
       
-      &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 200%;
-        height: 100%;
-        background: linear-gradient(90deg, 
-          rgba(255, 255, 255, 0) 0%,
-          rgba(255, 255, 255, 0.3) 50%,
-          rgba(255, 255, 255, 0) 100%);
-        animation: shimmer 2s infinite;
+      .lock-icon {
+        font-size: 32px;
+        margin-bottom: $spacing-sm;
+        
+        @media (max-width: $mobile) {
+          font-size: 24px;
+        }
       }
-    }
-  }
-  
-  .challenge-locked {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    color: white;
-    z-index: 10;
-    border-radius: 24px;
-    
-    .lock-icon {
-      font-size: 3rem;
-      color: #f1c40f;
-      margin-bottom: 1.2rem;
-      animation: lockPulse 2s infinite;
-      filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.5));
-    }
-    
-    p {
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: linear-gradient(to right, #f1c40f, #e67e22);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      font-size: 1.2rem;
-    }
-  }
-  
-  &.daily {
-    border-top: none;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(to right, #e74c3c, #f39c12);
-      border-radius: 5px 5px 0 0;
-      z-index: 3;
-    }
-  }
-  
-  &.weekly {
-    border-top: none;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(to right, #3498db, #2980b9);
-      border-radius: 5px 5px 0 0;
-      z-index: 3;
-    }
-  }
-  
-  &.monthly {
-    border-top: none;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(to right, #9b59b6, #8e44ad);
-      border-radius: 5px 5px 0 0;
-      z-index: 3;
-    }
-  }
-  
-  &.premium {
-    border-top: none;
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(to right, #f1c40f, #e67e22);
-      border-radius: 5px 5px 0 0;
-      z-index: 3;
-      animation: premiumBorderPulse 2s infinite;
+      
+      p {
+        text-align: center;
+        margin: 0;
+        padding: 0 $spacing-md;
+        font-size: 14px;
+        
+        @media (max-width: $mobile) {
+          font-size: 12px;
+          padding: 0 $spacing-sm;
+        }
+      }
     }
   }
 }
@@ -433,4 +254,4 @@
   100% {
     box-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
   }
-} 
+}

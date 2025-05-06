@@ -3,9 +3,18 @@
 .search-page {
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm; // Уменьшено с spacing-md
-  padding: $spacing-sm; // Уменьшено с spacing-md
-  padding-left: calc(60px + $spacing-sm); // Добавлен отступ для сайдбара
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  padding-left: calc(60px + $spacing-sm);
+
+  @media (max-width: $tablet) {
+    padding: $spacing-xs;
+    gap: $spacing-xs;
+  }
+
+  @media (max-width: $mobile) {
+    padding: $spacing-xs;
+  }
 }
 
 .search-results {
@@ -35,42 +44,48 @@
       font-size: 16px;
       max-width: 300px;
       margin: 0;
+
+      @media (max-width: $mobile) {
+        font-size: 14px;
+        max-width: 250px;
+      }
     }
   }
 }
 
 .users-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); // Уменьшено с 300px
-  gap: $spacing-sm; // Уменьшено с spacing-md
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $spacing-md;
   
   @media (max-width: $tablet) {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); // Уменьшено с 250px
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: $spacing-sm;
   }
   
   @media (max-width: $mobile) {
-    grid-template-columns: repeat(2, 1fr); // Изменено с 1fr на 2 колонки
+    grid-template-columns: 1fr;
+    gap: $spacing-xs;
   }
 }
-
 
 // Responsive styles
 @media (max-width: $tablet) {
   .search-content {
-    padding: $spacing-sm; // Уменьшено с spacing-md
+    padding: $spacing-sm;
   }
 
   .filters-section {
-    padding: $spacing-xs; // Уменьшено с spacing-sm
+    padding: $spacing-xs;
     
     .filter-item {
-      min-width: 120px; // Уменьшено со 150px
+      min-width: 100%;
     }
   }
 }
 
 @media (max-width: $mobile) {
   .search-content {
-    padding: $spacing-xs; // Уменьшено с spacing-sm
+    padding: $spacing-xs;
   }
 }

@@ -36,6 +36,7 @@ const CommunityDetails = () => {
 
   const handleChatClick = () => {
     navigate(`/community/${id}/chat`);
+    console.log("s")
   };
 
   const handleMemberClick = (userId) => {
@@ -87,7 +88,7 @@ const CommunityDetails = () => {
             <div className="header-content">
               <h1>{community.name}</h1>
               <div className='d-flex flex-wrap gap-3'>
-                <button className="chat-button" onClick={()=>handleChatClick}>
+                <button className="chat-button" onClick={handleChatClick}>
                   <FontAwesomeIcon icon={faComments} />
                   Открыть чат
                 </button>

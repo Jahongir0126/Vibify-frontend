@@ -13,7 +13,6 @@ const defaultFilters = {
 const Filters = ({ filters = defaultFilters, onChange }) => {
   const [specialties, setSpecialties] = useState([]);
   const [availableInterests, setAvailableInterests] = useState([]);
-  const [isInterestsOpen, setIsInterestsOpen] = useState(false);
 
   useEffect(() => {
     const fetchFilterData = async () => {
@@ -72,29 +71,24 @@ const Filters = ({ filters = defaultFilters, onChange }) => {
         <div className="filter-item interests-dropdown">
           <label>Интересы</label>
           <div className="dropdown-container">
-            <button 
-              className="interests-button"
-              onClick={() => setIsInterestsOpen(!isInterestsOpen)}
-            >
+            <button className="interests-button">
               {getSelectedInterestsCount() > 0 
                 ? `Выбрано: ${getSelectedInterestsCount()}`
                 : 'Выберите интересы'}
             </button>
-            {isInterestsOpen && (
-              <div className="interests-dropdown-content">
-                {availableInterests.map(interest => (
-                  <label key={interest.id} className="interest-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={filters.interests?.includes(interest.id)}
-                      onChange={() => handleInterestChange(interest.id)}
-                    />
-                    <span className="checkbox-custom"></span>
-                    {interest.name}
-                  </label>
-                ))}
-              </div>
-            )}
+            <div className="interests-dropdown-content">
+              {availableInterests.map(interest => (
+                <label key={interest.id} className="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    checked={filters.interests?.includes(interest.id)}
+                    onChange={() => handleInterestChange(interest.id)}
+                  />
+                  <span className="checkbox-custom"></span>
+                  {interest.name}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
         <div className="filter-item">

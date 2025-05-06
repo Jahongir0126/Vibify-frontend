@@ -4,6 +4,22 @@
   padding: 2rem 0;
   min-height: 100vh;
   transition: background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  @media (max-width: $tablet) {
+    padding: $spacing-md;
+    gap: $spacing-md;
+  }
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-sm;
+    gap: $spacing-sm;
+  }
   
   &.dark {
     background-color: #1a1a1a;
@@ -120,8 +136,6 @@
   .challenge-tabs {
     border-bottom: none;
     margin-bottom: 2.5rem;
-    display: flex;
-    justify-content: center;
     gap: 1rem;
     color: var($text-dark);
     
@@ -177,8 +191,143 @@
     }
   }
 }
-  
 
+.challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-lg;
+  
+  @media (max-width: $tablet) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: $spacing-md;
+  }
+  
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+}
+
+.challenge-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+  
+  @media (max-width: $tablet) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-sm;
+  }
+  
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+    gap: $spacing-xs;
+  }
+  
+  .stat-card {
+    background: var(--card-background);
+    padding: $spacing-md;
+    border-radius: $border-radius-lg;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    
+    @media (max-width: $mobile) {
+      padding: $spacing-sm;
+    }
+    
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      color: white;
+      
+      @media (max-width: $mobile) {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    
+    .stat-info {
+      h3 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+      }
+      
+      p {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text-primary);
+        
+        @media (max-width: $mobile) {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+.premium-banner {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: $border-radius-lg;
+  padding: $spacing-lg;
+  color: white;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  
+  @media (max-width: $tablet) {
+    padding: $spacing-md;
+  }
+  
+  @media (max-width: $mobile) {
+    padding: $spacing-sm;
+  }
+  
+  h2 {
+    margin: 0 0 $spacing-sm;
+    font-size: 24px;
+    
+    @media (max-width: $mobile) {
+      font-size: 20px;
+    }
+  }
+  
+  p {
+    margin: 0 0 $spacing-md;
+    font-size: 16px;
+    opacity: 0.9;
+    
+    @media (max-width: $mobile) {
+      font-size: 14px;
+    }
+  }
+  
+  .upgrade-button {
+    background: white;
+    color: var(--accent-primary);
+    border: none;
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $border-radius-full;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: $mobile) {
+      padding: $spacing-xs $spacing-md;
+      font-size: 14px;
+    }
+  }
+}
 
 // Анимации
 @keyframes shimmer {

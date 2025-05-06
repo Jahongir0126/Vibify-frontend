@@ -1,6 +1,8 @@
 @use '../../styles/variables' as *;
 
 .filters-section {
+  position: relative;
+  z-index: 100;
   background: var(--card-background);
   border-radius: 12px;
   padding: $spacing-md;
@@ -99,8 +101,19 @@
 }
 
 .interests-dropdown {
+  position: relative;
+  
   .dropdown-container {
     position: relative;
+
+    &:hover {
+      .interests-dropdown-content {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
   }
 
   .interests-button {
@@ -128,18 +141,26 @@
 
   .interests-dropdown-content {
     position: absolute;
-    top: calc(100% + 4px);
+    top: 100%;
     left: 0;
     right: 0;
     background: var(--background-primary);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-height: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-height: 300px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 9999;
     padding: 8px;
-
+    margin-top: 4px;
+    
+    // Добавляем плавную анимацию
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in-out;
+    
+    // Остальные стили для скроллбара и чекбоксов
     &::-webkit-scrollbar {
       width: 6px;
     }
@@ -222,4 +243,4 @@
   .filters-grid {
     grid-template-columns: 1fr;
   }
-} 
+}

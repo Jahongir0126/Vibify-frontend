@@ -4,12 +4,7 @@
   padding: 20px;
 }
 
-.profile-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
+
 
 .profile-header h1 {
   margin: 0;
@@ -22,8 +17,6 @@
   color: #e0e0e0;
 }
 
-.profile-content p {
-}
 
 .profile-page {
   display: flex;
@@ -37,7 +30,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
   position: relative;
   padding: 1rem;
 }
